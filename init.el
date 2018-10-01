@@ -164,4 +164,5 @@
 
        :private ;; ~/.config/doom/modules/private/{...}
        frames-only
+       org-dnd
        )
