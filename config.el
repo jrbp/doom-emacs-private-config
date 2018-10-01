@@ -2,18 +2,10 @@
 (setq doom-font (font-spec :family "Monospace" :size 18))
 
 (after! mu4e
-  ;;; setting up sending mail with msmtp
-  ;(setq message-send-mail-function 'message-send-mail-with-sendmail)
-  ;(setq sendmail-program "msmtp")
-  ;;; tell msmtp to choose the SMTP server according to the from field in the outgoing email
-  ;(setq message-sendmail-extra-arguments '("--read-envelope-from"))
-  ;(setq message-sendmail-f-is-evil 't)
-  
+
   ;; setting up email in mu4e
-  ;;
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq sendmail-program "msmtp")
-  ;(setq message-sendmail-extra-arguments '("--read-envelope-from"))
   (set-email-account! "RUphysics"
       '((mu4e-sent-folder       . "/RUphysics/Sent")
         (mu4e-drafts-folder     . "/RUphysics/Drafts")
@@ -23,18 +15,6 @@
         (user-mail-address      . "jrb285@physics.rutgers.edu")
         (user-full-name         . "John Bonini"))
       t)
-  ;;(setq mu4e-account-alist
-  ;;      '(("RUphysics"
-  ;;         ;; Under each account, set the account-specific variables you want.
-  ;;         (mu4e-sent-messages-behavior sent)
-  ;;         (mu4e-sent-folder "/RUphysics/Sent")
-  ;;         (mu4e-drafts-folder "/RUphysics/Drafts")
-  ;;         (mu4e-refile-folder "/RUphysics/Archive")
-  ;;         (mu4e-trash-folder "/RUphysics/Trash")
-  ;;         (user-mail-address "jrb285@physics.rutgers.edu")
-  ;;         (user-full-name "John Bonini"))
-  ;;        ))
-  ;;(mu4e/mail-account-reset)
   ;;; Set up some common mu4e variables
   (setq mu4e-update-interval 300
         mu4e-compose-signature-auto-include nil
