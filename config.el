@@ -1,5 +1,7 @@
 ;;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
-(after! mu4e 
+(set-face-attribute 'default nil :height 160)
+
+(after! mu4e
   ;;; setting up sending mail with msmtp
   ;(setq message-send-mail-function 'message-send-mail-with-sendmail)
   ;(setq sendmail-program "msmtp")
