@@ -137,3 +137,14 @@
 
 (after! python
   (setenv "PYTHONPATH" "/home/john/scripts/pyMods/:"))
+
+;; key binds
+(map! :leader
+      (:desc "App" :prefix "a"
+        :desc "Ielm" :n "i" #'ielm
+        :desc "Mail" :n "m" #'=email
+        :desc "Processes" :n "p" #'list-processes))
+
+(map! :leader
+      :mode process-menu-mode
+      :desc "Kill process" :n "k" #'process-menu-delete-process)
