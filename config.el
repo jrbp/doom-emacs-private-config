@@ -1,5 +1,5 @@
 ;;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
-(set-face-attribute 'default nil :height 160)
+(setq doom-font (font-spec :family "Monospace" :size 18))
 
 (after! mu4e
   ;;; setting up sending mail with msmtp
