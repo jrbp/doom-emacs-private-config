@@ -2,7 +2,7 @@
 
 (def-package! ox-dnd
   :config
-  ; allow for dndlongtable, currently we shadow old dnd, maybe change?
+  ; allow for dndlongtable (could have just set it in :init instead of replacing)
   (setf (cadr (assoc "dnd" org-latex-classes))
         "\\documentclass[letterpaper,10pt,twoside,twocolumn,openany]{book}
 [NO-DEFAULT-PACKAGES]
@@ -27,6 +27,7 @@
   \\noindent
 }
 \\makeatother")
+
   ; redefine, now with more than 2 columns, and allow for dndlongtable
   (defun org-dnd-table (table contents info)
     "Transcode a table from Org to a D&D LaTeX table.
@@ -60,7 +61,7 @@
              ""
              (org-latex-table table contents info)))))))));)
 
+  ; update table values on export
   (advice-add 'org-dnd-export-to-pdf :before
-              (lambda (&optional async subtreep visible-only body-only ext-plist)
-                (interactive) (org-table-iterate-buffer-tables)))
+              (lambda (&rest r) (org-table-iterate-buffer-tables)))
   )
