@@ -54,7 +54,11 @@
   (add-to-list 'org-src-lang-modes '("ipython" . python))
   ;; I like when org opens links in new windows/frames
   (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
-  (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
+
+  (if (featurep! :private frames-only)
+    (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
+    (setq org-src-window-setup 'other-window)
+    )
 
   (add-to-list 'org-file-apps '("\\.xoj\\'" . "xournal %s"))
   (setq org-ref-default-bibliography '("~/Dropbox/org/references/misc/references.bib")
