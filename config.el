@@ -96,6 +96,45 @@
          ("a" "Appointments" entry (file+headline "~/Dropbox/org/master.org" "Misc appointments")
           "* APPT %?\n  %i %a %U")
          ))
+
+
+  (after! ob-ipython
+    (setq ob-ipython-resources-dir ".ob-ipython-resrc/")
+    (defun +org*org-babel-edit-prep:ipython-complete (info)
+      (let* ((params (nth 2 info))
+             (session (cdr (assoc :session params))))
+        (org-babel-ipython-initiate-session session params))
+      ;; Support for python.el's "send-code" commands within edit buffers.
+      (setq-local python-shell-buffer-name
+                  (format "Python:ob-ipython-%s"
+                          (ob-ipython--normalize-session
+                           (cdr (assoc :session (nth 2 info))))))
+      (setq-local default-directory
+                  (format "%s"
+                          (ob-ipython--normalize-session
+                           (cdr (assoc :pydir (nth 2 info))))))
+      (ob-ipython-mode 1)
+      ;; hack on company mode to use company-capf rather than company-anaconda
+      (when (featurep! :completion company)
+        (setq-local company-backends
+                    '(company-ob-ipython
+                      company-anaconda
+                      company-dabbrev
+                      company-files
+                      company-yasnippet))
+        (setq-local company-idle-delay 0.1))
+      (when (featurep 'lpy)
+        (setq lispy-python-proc
+              (format "Python:ob-ipython-%s"
+                      (ob-ipython--normalize-session
+                       (cdr (assoc :session (nth 2 info)))))
+              lispy--python-middleware-loaded-p nil)
+        (lispy--python-middleware-load)))
+    ;TODO: in the above can we bind something to ob-ipython-inspect
+    ;      (would be K, but the anaconda bits are actually useful when we havn't executed yet)
+    ;TODO: repl only has completion with C-x C-o
+    (advice-add '+org*org-babel-edit-prep:ipython :override #'+org*org-babel-edit-prep:ipython-complete)
+    )
   )
 
 (after! python
