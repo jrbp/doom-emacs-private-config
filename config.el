@@ -112,25 +112,41 @@
                           (ob-ipython--normalize-session
                            (cdr (assoc :pydir (nth 2 info))))))
       (ob-ipython-mode 1)
-      ;; hack on company mode to use company-capf rather than company-anaconda
+      ;; A few things to to do completions properly
+      ;; 1.  use company-ob-ipython then company-anaconda
+      ;;     anaconda will work before a block is executed
+      ;;     and is useful for getting documentation
+      ;; 2. set company-idle-delay to nil and bind a key for completion (C-n)
+      ;;    this is because company-ob-ipython is slow
+      ;;    see https://github.com/gregsexton/ob-ipython/issues/151
+      ;;    Two possible ways:
+      ;;      a. (current) bind to company-ob-ipython (then don't put it in backends and keep delay finite)
+      ;;      b. bind to company-indent-or-complete-common
+      ;;    ISSUE: the complete binding seems to not work with :local
+      ;; 3. for docs from parts anaconda can't track we bind a key to
+      ;;    ob-ipython-complete (C-S-k)
+      ;;    could replace with conditional map (when anaconda fails) so K can be used
       (when (featurep! :completion company)
         (setq-local company-backends
-                    '(company-ob-ipython
-                      company-anaconda
+                    '(company-anaconda
                       company-dabbrev
                       company-files
                       company-yasnippet))
         (setq-local company-idle-delay 0.1))
+      (map! :local
+            :desc "ob-ipython-inspect" :n "C-S-k" #'ob-ipython-inspect
+            :desc "ob ipython completion" :i "C-n" #'company-ob-ipython)
       (when (featurep 'lpy)
         (setq lispy-python-proc
               (format "Python:ob-ipython-%s"
                       (ob-ipython--normalize-session
                        (cdr (assoc :session (nth 2 info)))))
               lispy--python-middleware-loaded-p nil)
-        (lispy--python-middleware-load)))
-    ;TODO: in the above can we bind something to ob-ipython-inspect
-    ;      (would be K, but the anaconda bits are actually useful when we havn't executed yet)
-    ;TODO: repl only has completion with C-x C-o
+        (lispy--python-middleware-load))
+      )
+      ;; 4. fix repl completion? company-capf seems to work inconsistently (C-x C-o)
+      ;;    python-shell-completion-complete-or-indent seems to work (TAB = C-i)
+      ;;    but is annoying when there are multiple choices
     (advice-add '+org*org-babel-edit-prep:ipython :override #'+org*org-babel-edit-prep:ipython-complete)
     )
   )
