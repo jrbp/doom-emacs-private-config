@@ -2,7 +2,9 @@
 (setq doom-font (font-spec :family "Monospace" :size 18))
 
 (after! mu4e
-
+ ; doom doesn't load org-mu4e until composing
+ ; this stops us from using its org-capture function
+  (require 'org-mu4e nil 'noerror)
   ;; setting up email in mu4e
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq sendmail-program "msmtp")
