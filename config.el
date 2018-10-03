@@ -148,3 +148,13 @@
 (map! :leader
       :mode process-menu-mode
       :desc "Kill process" :n "k" #'process-menu-delete-process)
+
+(defun copy-window ()
+  (interactive)
+  (let ((pos (point)))
+    (switch-to-buffer-other-window (current-buffer))
+    (goto-char pos))
+  )
+
+(map!
+ :desc "open copy of current window" :m "go" 'copy-window)
