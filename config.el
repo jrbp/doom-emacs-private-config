@@ -40,15 +40,6 @@
            "All inboxes" ?i))))
 
 (after! org
-
- (setq org-agenda-files
-   '("~/Dropbox/org/transparent_conductors.org"
-     "~/Dropbox/org/pto_divacancies.org"
-     "~/Dropbox/org/perovskite_database.org"
-     "~/Dropbox/org/wannier_polarization.org"
-     "~/Dropbox/org/master.org"
-     "~/Dropbox/org/dielectric_slab_model.org"))
-
   (setq org-image-actual-width 700)
   ;; make code look nice even before session started
   (add-to-list 'org-src-lang-modes '("ipython" . python))
