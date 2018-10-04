@@ -78,7 +78,7 @@
                                   ("writing/preparing" . ?p)
                                   ("calculations" . ?s)))
  (setq org-todo-keywords
-       '((sequence "TODO" "IN-PROGRESS" "WAITING" "APPT" "CANCELED" "DEFERRED" "DONE")))
+       '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
  (setq org-capture-templates
        '(("t" "Todo" entry (file+headline "~/org/master.org" "Tasks")
           "* TODO %?\n  %i %a %U")
