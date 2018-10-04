@@ -1,13 +1,6 @@
 ;;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
 (setq doom-font (font-spec :family "Monospace" :size 18))
 
-(setq initial-buffer-choice
-      (lambda ()
-        (let ((org-agenda-window-setup 'other-window))
-          (org-agenda-list)
-          (delete-other-windows))
-        (get-buffer "*Org Agenda*")))
-
 (after! mu4e
  ; doom doesn't load org-mu4e until composing
  ; this stops us from using its org-capture function
