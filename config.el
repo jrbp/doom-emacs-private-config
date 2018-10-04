@@ -1,6 +1,8 @@
 ;;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
 (setq doom-font (font-spec :family "Monospace" :size 18))
 
+(setq initial-buffer-choice "~/org/master.org")
+
 (after! mu4e
  ; doom doesn't load org-mu4e until composing
  ; this stops us from using its org-capture function
