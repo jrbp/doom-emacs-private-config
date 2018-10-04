@@ -158,6 +158,9 @@
       :mode process-menu-mode
       :desc "Kill process" :n "k" #'process-menu-delete-process)
 
+(map! :leader
+      :prefix "m" :desc "schedule" :n "s" #'org-schedule)
+
 (defun copy-window ()
   (interactive)
   (let ((pos (point)))
