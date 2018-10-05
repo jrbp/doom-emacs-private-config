@@ -18,4 +18,8 @@ Prepended with `org-super-agenda-header-separator'."
          (concat org-super-agenda-header-separator s))))
   (org-super-agenda-mode)
   (setq org-super-agenda-groups
-         '((:auto-category t))))
+         '((:name "Appointments"
+                  :time-grid t)
+           (:name "Important"
+                  :priority "A")
+           (:auto-category t))))
