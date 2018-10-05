@@ -154,14 +154,14 @@
       (:desc "App" :prefix "a"
         :desc "Ielm" :n "i" #'ielm
         :desc "Mail" :n "m" #'=email
-        :desc "Processes" :n "p" #'list-processes))
+        :desc "Processes" :n "p" #'list-processes)
+      :prefix "m" :desc "schedule" :n "s" #'org-schedule)
 
 (map! :leader
       :mode process-menu-mode
       :desc "Kill process" :n "k" #'process-menu-delete-process)
-
-(map! :leader
-      :prefix "m" :desc "schedule" :n "s" #'org-schedule)
+(map! :mode process-menu-mode
+      :desc "Kill process" :n "q" #'+workspace/close-window-or-workspace)
 
 (defun copy-window ()
   (interactive)
