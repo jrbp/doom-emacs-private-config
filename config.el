@@ -162,7 +162,7 @@
       :desc "Kill process" :n "k" #'process-menu-delete-process)
 (map! :mode process-menu-mode
       :desc "Quit" :n "q" (lambda () (interactive)
-                            (kill-this-buffer) (+workspace/close-window-or-workspace)))
+                            (kill-this-buffer) (evil-quit)))
 
 (defun copy-window ()
   (interactive)
