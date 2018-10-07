@@ -44,8 +44,6 @@
            "All inboxes" ?i))))
 
 (after! org
-  (remove-hook 'org-agenda-finalize-hook '+org|exclude-agenda-buffers-from-workspace) ; should be removed after persp bug fixed
-
   (setq org-image-actual-width 700)
   ;; make code look nice even before session started
   (add-to-list 'org-src-lang-modes '("ipython" . python))
