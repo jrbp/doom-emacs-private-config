@@ -165,6 +165,7 @@
 (map! :mode process-menu-mode
       :desc "Quit" :n "q" (lambda () (interactive)
                             (kill-this-buffer) (evil-quit)))
+(map! :desc "store(grab) link" "C-c C-g" #'org-store-link)
 
 (defun copy-window ()
   (interactive)
