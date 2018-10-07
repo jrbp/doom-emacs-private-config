@@ -86,6 +86,8 @@
  (setq org-capture-templates
        '(("t" "Todo" entry (file+headline "~/org/master.org" "Tasks")
           "* TODO %?\n  %i %a %U")
+         ("l" "Log (misc)" entry (file+headline "~/org/misc-log.org" "Tasks")
+          "* TODO %?\n  %i %a %U")
          ("s" "Someday" entry (file+headline "~/org/someday.org" "Tasks")
           "* TODO %?\n  %i %a %U")
          ("a" "Appointments" entry (file+headline "~/org/master.org" "Misc appointments")
