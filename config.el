@@ -151,15 +151,11 @@
 (after! python
   (setenv "PYTHONPATH" "/home/john/scripts/pyMods/:"))
 
-; do not create new workspaces when making new frames
-; mainly beacuse I like frames-only-mode
-(after!  persp-mode
-  (remove-hook 'after-make-frame-functions #'+workspaces|init-frame)
-  (setq persp-init-frame-behaviour nil
-        persp-init-new-frame-behaviour-override -1
-        persp-interactive-init-frame-behaviour-override -1
-        persp-emacsclient-init-frame-behaviour-override -1)
-  (remove-hook 'delete-frame-functions #'+workspaces|delete-associated-workspace))
+; do not create new workspaces when making new frames (for frames only mode)
+(when (featurep! :private frames-only)
+  (after!  persp-mode
+    (setq persp-interactive-init-frame-behaviour-override -1
+          persp-emacsclient-init-frame-behaviour-override -1)))
 
 ;; key binds
 (map! :leader
