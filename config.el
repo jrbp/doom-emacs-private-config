@@ -154,6 +154,11 @@
 (after! python
   (setenv "PYTHONPATH" "/home/john/scripts/pyMods/:"))
 
+(when (featurep! :private frames-only)
+  (after!  persp-mode
+    (setq persp-interactive-init-frame-behaviour-override -1
+          persp-emacsclient-init-frame-behaviour-override -1)))
+
 ;; key binds
 (map! :leader
       (:desc "App" :prefix "a"
