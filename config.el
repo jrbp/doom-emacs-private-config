@@ -62,6 +62,9 @@
  (setq org-refile-targets (quote (("master.org" :maxlevel . 1)
                                   ("archive.org" :maxlevel . 1)
                                   (org-agenda-files :maxlevel . 1))))
+ ; default agenda view is just today
+ (setq org-agenda-span 'day)
+ (setq org-agenda-start-day nil)
 
  (defun esf/execute-startup-block ()
    (interactive)
