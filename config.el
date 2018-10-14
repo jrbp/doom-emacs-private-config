@@ -44,6 +44,7 @@
            "All inboxes" ?i))))
 
 (after! org
+  (setq org-export-with-sub-superscripts (quote {}))
   (setq org-image-actual-width 700)
   ;; make code look nice even before session started
   (add-to-list 'org-src-lang-modes '("ipython" . python))
