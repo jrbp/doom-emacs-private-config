@@ -152,7 +152,7 @@
   )
 
 (after! python
-  (setenv "PYTHONPATH" "/home/john/scripts/pyMods/:"))
+  (setenv "PYTHONPATH" "/home/john/scripts/awful_pip_prefix_thing/lib/python3.6/site-packages/:/home/john/scripts/pyMods/:"))
 
 (when (featurep! :private frames-only)
   (after!  persp-mode
