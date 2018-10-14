@@ -97,6 +97,7 @@
 
 
   (after! ob-ipython
+    (setq ob-ipython-command "/home/john/.pyenv/shims/jupyter")
     (setq ob-ipython-resources-dir ".ob-ipython-resrc/")
     (defun +org*org-babel-edit-prep:ipython-complete (info)
       (let* ((params (nth 2 info))
