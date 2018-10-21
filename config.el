@@ -44,6 +44,14 @@
            "All inboxes" ?i))))
 
 (after! org
+  ; org was getting slow, disabling some things for seed up here:
+  (remove-hook! 'org-mode-hook #'+org|enable-auto-update-cookies)
+  (advice-remove #'evil-org-open-below #'+org*evil-org-open-below) ; didn't like this anyway
+  ; realzied there were some bad json dumps in some files, cleaning up the really long lines helped a lot
+  ; see goto-long-line which has been added to this config
+
+
+  (add-to-list 'org-file-apps '("\\.pdf\\'" . "zathura %s"))
   (setq org-export-with-sub-superscripts (quote {}))
   (setq org-image-actual-width 700)
   ;; make code look nice even before session started
@@ -186,3 +194,22 @@
 
 (map!
  :desc "open copy of current window" :m "go" 'copy-window)
+
+(defun goto-long-line (len)
+  "Go to the first line that is at least LEN characters long.
+Use a prefix arg to provide LEN.
+Plain `C-u' (no number) uses `fill-column' as LEN."
+  (interactive "P")
+  (setq len  (if (consp len) fill-column (prefix-numeric-value len)))
+  (let ((start-line                 (line-number-at-pos))
+        (len-found                  0)
+        (found                      nil)
+        (inhibit-field-text-motion  t))
+    (while (and (not found) (not (eobp)))
+      (forward-line 1)
+      (setq found  (< len (setq len-found  (- (line-end-position) (point))))))
+    (if found
+        (when (interactive-p)
+          (message "Line %d: %d chars" (line-number-at-pos) len-found))
+      (goto-line start-line)
+      (message "Not found"))))
