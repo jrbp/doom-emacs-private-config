@@ -59,7 +59,9 @@
   ; see goto-long-line which has been added to this config
 
 
+  (add-to-list 'org-file-apps '("\\.nb\\'" . "mathematica %s"))
   (add-to-list 'org-file-apps '("\\.pdf\\'" . "zathura %s"))
+  (add-to-list 'org-file-apps '("\\.odp\\'" . "libreoffice %s"))
   (setq org-export-with-sub-superscripts (quote {}))
   (setq org-image-actual-width 700)
   ;; make code look nice even before session started
