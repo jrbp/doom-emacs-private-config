@@ -3,6 +3,14 @@
 
 (setq initial-buffer-choice "~/org/master.org")
 
+(defun open-termite ()
+  (interactive)
+  (shell-command "termite"))
+
+(defun open-ranger ()
+  (interactive)
+  (shell-command "termite -e ranger&"))
+
 (after! mu4e
  ; doom doesn't load org-mu4e until composing
  ; this stops us from using its org-capture function
@@ -266,7 +274,9 @@
       (:desc "App" :prefix "a"
         :desc "Ielm" :n "i" #'ielm
         :desc "Mail" :n "m" #'=email
-        :desc "Processes" :n "p" #'list-processes)
+        :desc "Processes" :n "p" #'list-processes
+        :desc "External Termite" :n "t" #'open-termite
+        :desc "External Ranger" :n "r" #'open-ranger)
       :prefix "m" :desc "schedule" :n "s" #'org-schedule)
 
 (map! :leader
