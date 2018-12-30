@@ -5,11 +5,11 @@
 
 (defun open-termite ()
   (interactive)
-  (call-process-shell-command "termite&"))
+  (call-process-shell-command "termite&" nil 0))
 
 (defun open-ranger ()
   (interactive)
-  (call-process-shell-command "termite -e ranger&"))
+  (call-process-shell-command "termite -e ranger&" nil 0))
 
 (after! mu4e
  ; doom doesn't load org-mu4e until composing
