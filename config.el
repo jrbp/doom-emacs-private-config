@@ -52,11 +52,21 @@
            "All inboxes" ?i))))
 
 (after! org
-  ; org was getting slow, disabling some things for seed up here:
+  ; org was getting slow, disabling some things for speed up here:
   (remove-hook! 'org-mode-hook #'+org|enable-auto-update-cookies)
   (advice-remove #'evil-org-open-below #'+org*evil-org-open-below) ; didn't like this anyway
   ; realzied there were some bad json dumps in some files, cleaning up the really long lines helped a lot
   ; see goto-long-line which has been added to this config
+  ;
+  ; I didn't like the auto completeion of the formatting stuff
+  (sp-with-modes 'org-mode
+    (sp-local-pair "*" nil :actions :rem)
+    (sp-local-pair "_" nil :actions :rem)
+    (sp-local-pair "/" nil :actions :rem)
+    (sp-local-pair "~" nil :actions :rem)
+    (sp-local-pair "=" nil :actions :rem))
+
+
 
 
   (add-to-list 'org-file-apps '("\\.nb\\'" . "mathematica %s"))
