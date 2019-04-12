@@ -80,6 +80,11 @@
     (sp-local-pair "=" nil :actions :rem))
 
 
+  ; Didn't like that new headings on C-return weren't put in at point
+  (setq org-insert-heading-respect-content nil)
+  (map! :map evil-org-mode-map
+        :desc "New header at point"
+        :ni [C-return] 'org-insert-heading)
 
 
   (add-to-list 'org-file-apps '("\\.nb\\'" . "mathematica %s"))
