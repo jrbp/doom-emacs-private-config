@@ -22,4 +22,7 @@ Prepended with `org-super-agenda-header-separator'."
                   :time-grid t)
            (:name "Important"
                   :priority "A")
-           (:auto-category t))))
+           (:name "At some point"
+                  :priority "C" :order 99)
+           (:auto-category t)
+           )))
