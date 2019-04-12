@@ -140,6 +140,8 @@
           "* TODO %?\n  %i %a %U")
          ("a" "Appointments" entry (file+headline "~/org/master.org" "Misc appointments")
           "* %?\n  %i %a %U")
+         ("n" "Notes" entry (file+headline "~/org/master.org" "Notes")
+          "* %?\n  %i %a %U")
          ))
 
 
