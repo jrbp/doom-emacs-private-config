@@ -1,7 +1,8 @@
 # -*- mode: snippet -*-
 # name: ipython block
 # key: py
+# old way: #+BEGIN_SRC ipython :session ${1::ipyfile ${2:$$(let ((temporary-file-directory "./")) (make-temp-file "py" nil ".png"))} }:exports ${3:both} :results output drawer :async t :pydir /home/john/.tmp-obpy
 # --
-#+BEGIN_SRC ipython :session ${1::ipyfile ${2:$$(let ((temporary-file-directory "./")) (make-temp-file "py" nil ".png"))} }:exports ${3:both} :results raw drawer :async t :pydir /home/john/.tmp-obpy
+#+BEGIN_SRC ipython :session :ipyfile :exports :results ${1:output} drawer :async t :pydir /home/john/.tmp-obpy
 $0
 #+END_SRC
