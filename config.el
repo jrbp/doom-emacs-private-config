@@ -295,6 +295,7 @@
   )                                    
 
 (setenv "PYTHONPATH" "/home/john/scripts/awful_pip_prefix_thing/lib/python3.6/site-packages/:/home/john/scripts/pyMods/:")
+; (setq conda-anaconda-home "/home/john/.pyenv/versions/anaconda3-4.4.0")
 
 (when (featurep! :private frames-only)
   (after!  persp-mode
