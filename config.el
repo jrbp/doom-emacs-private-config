@@ -86,7 +86,7 @@
         :desc "New header at point"
         :ni [C-return] 'org-insert-heading)
 
-
+  (add-to-list 'org-file-apps '("\\.vesta\\'" . "VESTA %s"))
   (add-to-list 'org-file-apps '("\\.nb\\'" . "mathematica %s"))
   (add-to-list 'org-file-apps '("\\.pdf\\'" . "zathura %s"))
   (add-to-list 'org-file-apps '("\\.odp\\'" . "libreoffice %s"))
