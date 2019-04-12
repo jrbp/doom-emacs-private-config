@@ -23,6 +23,8 @@
     (switch-to-buffer (find-file sl))))
 
 (after! mu4e
+  (add-to-list 'mu4e-view-actions
+               '("ViewInBrowser" . mu4e-action-view-in-browser) t)
  ; doom doesn't load org-mu4e until composing
  ; this stops us from using its org-capture function
   (require 'org-mu4e nil 'noerror)
