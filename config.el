@@ -11,6 +11,17 @@
   (interactive)
   (call-process-shell-command "termite -e ranger&" nil 0))
 
+; terrible hack for sshfs files to not be super slow
+(defun open-as-sym-link (f)
+  (interactive "fFile:")
+  (let ((sl
+        (concat
+         (file-name-as-directory "/home/john/.tmp_sshfs_symlinks")
+         (file-name-nondirectory f))))
+    (if (not (file-exists-p sl))
+        (f-symlink f sl))
+    (switch-to-buffer (find-file sl))))
+
 (after! mu4e
  ; doom doesn't load org-mu4e until composing
  ; this stops us from using its org-capture function
