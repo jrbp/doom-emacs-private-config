@@ -1,7 +1,6 @@
 ;;; private/org-ref/config.el -*- lexical-binding: t; -*-
 (def-package! org-ref
   :config
-  (require 'org-ref)
   (setq reftex-default-bibliography '("~/org/references/misc/references.bib"))
   ;;
   ;; see org-ref for use of these variables
@@ -15,4 +14,9 @@
   ;; open pdf with system pdf viewer (works on mac)
   (setq bibtex-completion-pdf-open-function 'org-open-file)
 
+  (map!
+   :after latex
+   :desc "Insert citation from bib"
+   :map LaTeX-mode-map
+   "C-c l" #'org-ref-helm-insert-cite-link)
   )
