@@ -88,6 +88,7 @@
            "All inboxes" ?i))))
 
 (after! org
+  ; (add-hook! 'org-mode-hook (setq-local display-line-numbers 'nil)) ; for newer version of doom i reverted from
   ; org was getting slow, disabling some things for speed up here:
   (remove-hook! 'org-mode-hook #'+org|enable-auto-update-cookies)
   (advice-remove #'evil-org-open-below #'+org*evil-org-open-below) ; didn't like this anyway
@@ -166,6 +167,10 @@
 
 
   (after! ob-ipython
+    ;; made ob-ipython work for newer version of doom I reverted from
+    ;; (after! ob-async
+    ;;   (add-to-list 'ob-async-no-async-languages-alist "ipython"))
+
     (setq ob-ipython-command "/home/john/.pyenv/shims/jupyter")
     (setq ob-ipython-resources-dir ".ob-ipython-resrc/")
     (defun +org*org-babel-edit-prep:ipython-complete (info)
@@ -218,6 +223,12 @@
       ;;    python-shell-completion-complete-or-indent seems to work (TAB = C-i)
       ;;    but is annoying when there are multiple choices
     (advice-add '+org*org-babel-edit-prep:ipython :override #'+org*org-babel-edit-prep:ipython-complete)
+
+    ;; from https://github.com/gregsexton/ob-ipython/issues/135#issuecomment-397463174
+    ;; (advice-add 'ob-ipython--collect-json :before
+    ;;             (lambda (&rest args)
+    ;;               (when (re-search-forward "{" nil t)
+    ;;                 (backward-char))))
     )
 
   ; don't want return to execute src blocks
@@ -314,6 +325,7 @@
 
   )                                    
 
+(pyenv-mode-set "anaconda3-4.4.0")
 (setenv "PYTHONPATH" "/home/john/scripts/awful_pip_prefix_thing/lib/python3.6/site-packages/:/home/john/scripts/pyMods/:")
 ; (setq conda-anaconda-home "/home/john/.pyenv/versions/anaconda3-4.4.0")
 
