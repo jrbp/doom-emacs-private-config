@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: pmg structure vis
+# key: vis
+# --
+import pymatgen.vis.structure_vtk as vis
+svis = vis.StructureVis()
+svis.set_structure(${1:struct})
+svis.ren.GetActiveCamera().ParallelProjectionOn()
+svis.show()
+svis.close()
