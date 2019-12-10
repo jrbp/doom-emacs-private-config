@@ -126,9 +126,6 @@
     )
 
   (add-to-list 'org-file-apps '("\\.xoj\\'" . "xournal %s"))
-  (setq org-ref-default-bibliography '("~/org/references/misc/references.bib")
-        org-ref-pdf-directory "~/Documents/papers/misc/"
-        org-ref-bibliography-notes "~/org/references/misc/notes.org")
  (setq org-refile-targets (quote (("master.org" :maxlevel . 1)
                                   ("archive.org" :maxlevel . 1)
                                   (org-agenda-files :maxlevel . 1))))

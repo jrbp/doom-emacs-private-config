@@ -167,4 +167,5 @@
        frames-only
        org-dnd
        super-agenda
+       org-ref
        )
