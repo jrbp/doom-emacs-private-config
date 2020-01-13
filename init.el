@@ -21,7 +21,8 @@
 
        :completion
        (company          ; the ultimate code completion backend
-        +auto)           ; as-you-type code completion
+        ; +auto)           ; as-you-type code completion
+        +childframe)
        (helm             ; the *other* search engine for love and life
         +fuzzy)          ; enable fuzzy search backend for helm
        ;;ido               ; the other *other* search engine...
@@ -149,12 +150,12 @@
        (org              ; organize your plain life in plain text
         +attach          ; custom attachment system
         +babel           ; running code in org
-        +ipython           ; ob-ipython
+        ;; +ipython           ; ob-ipython
         +capture         ; org-capture in and outside of Emacs
         +export          ; Exporting org to whatever you want
-        ;; +dragndrop       ; drag & drop files/images into org buffers
+        +dragndrop       ; drag & drop files/images into org buffers
         ;;+hugo            ; use Emacs for hugo blogging
-        ;;+jupyter        ; ipython/jupyter support for babel
+        +jupyter        ; ipython/jupyter support for babel
         ;;+pandoc          ; export-with-pandoc support
         ;;+pomodoro        ; be fruitful with the tomato technique
         +present)        ; Emacs for presentations

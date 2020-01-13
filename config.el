@@ -88,6 +88,9 @@
            "All inboxes" ?i))))
 
 (after! org
+  (set-company-backend! 'org-mode
+    'company-capf) ; put this in front so completions work for jupyter
+
   ; (add-hook! 'org-mode-hook (setq-local display-line-numbers 'nil)) ; for newer version of doom i reverted from
   ; org was getting slow, disabling some things for speed up here:
   (remove-hook! 'org-mode-hook #'+org|enable-auto-update-cookies)
@@ -166,70 +169,70 @@
          ))
 
 
-  (after! ob-ipython
-    ;; made ob-ipython work for newer version of doom I reverted from
-    ;; (after! ob-async
-    ;;   (add-to-list 'ob-async-no-async-languages-alist "ipython"))
+  ;; (after! ob-ipython
+  ;;   ;; made ob-ipython work for newer version of doom I reverted from
+  ;;   ;; (after! ob-async
+  ;;   ;;   (add-to-list 'ob-async-no-async-languages-alist "ipython"))
 
-    (setq ob-ipython-command "/home/john/.pyenv/shims/jupyter")
-    (setq ob-ipython-resources-dir ".ob-ipython-resrc/")
-    (defun +org*org-babel-edit-prep:ipython-complete (info)
-      (let* ((params (nth 2 info))
-             (session (cdr (assoc :session params))))
-        (org-babel-ipython-initiate-session session params))
-      ;; Support for python.el's "send-code" commands within edit buffers.
-      (setq-local python-shell-buffer-name
-                  (format "Python:ob-ipython-%s"
-                          (ob-ipython--normalize-session
-                           (cdr (assoc :session (nth 2 info))))))
-      (setq-local default-directory
-                  (format "%s"
-                          (ob-ipython--normalize-session
-                           (cdr (assoc :pydir (nth 2 info))))))
-      (ob-ipython-mode 1)
-      ;; A few things to to do completions properly
-      ;; 1.  use company-ob-ipython then company-anaconda
-      ;;     anaconda will work before a block is executed
-      ;;     and is useful for getting documentation
-      ;; 2. set company-idle-delay to nil and bind a key for completion (C-n)
-      ;;    this is because company-ob-ipython is slow
-      ;;    see https://github.com/gregsexton/ob-ipython/issues/151
-      ;;    Two possible ways:
-      ;;      a. (current) bind to company-ob-ipython (then don't put it in backends and keep delay finite)
-      ;;      b. bind to company-indent-or-complete-common
-      ;;    ISSUE: the complete binding seems to not work with :local
-      ;; 3. for docs from parts anaconda can't track we bind a key to
-      ;;    ob-ipython-complete (C-S-k)
-      ;;    could replace with conditional map (when anaconda fails) so K can be used
-      (when (featurep! :completion company)
-        (setq-local company-backends
-                    '(company-anaconda
-                      company-dabbrev
-                      company-files
-                      company-yasnippet))
-        (setq-local company-idle-delay 0.1))
-      (map! :local
-            :desc "ob-ipython-inspect" :n "C-S-k" #'ob-ipython-inspect
-            :desc "ob ipython completion" :i "C-n" #'company-ob-ipython)
-      (when (featurep 'lpy)
-        (setq lispy-python-proc
-              (format "Python:ob-ipython-%s"
-                      (ob-ipython--normalize-session
-                       (cdr (assoc :session (nth 2 info)))))
-              lispy--python-middleware-loaded-p nil)
-        (lispy--python-middleware-load))
-      )
-      ;; 4. fix repl completion? company-capf seems to work inconsistently (C-x C-o)
-      ;;    python-shell-completion-complete-or-indent seems to work (TAB = C-i)
-      ;;    but is annoying when there are multiple choices
-    (advice-add '+org*org-babel-edit-prep:ipython :override #'+org*org-babel-edit-prep:ipython-complete)
+  ;;   (setq ob-ipython-command "/home/john/.pyenv/shims/jupyter")
+  ;;   (setq ob-ipython-resources-dir ".ob-ipython-resrc/")
+  ;;   (defun +org*org-babel-edit-prep:ipython-complete (info)
+  ;;     (let* ((params (nth 2 info))
+  ;;            (session (cdr (assoc :session params))))
+  ;;       (org-babel-ipython-initiate-session session params))
+  ;;     ;; Support for python.el's "send-code" commands within edit buffers.
+  ;;     (setq-local python-shell-buffer-name
+  ;;                 (format "Python:ob-ipython-%s"
+  ;;                         (ob-ipython--normalize-session
+  ;;                          (cdr (assoc :session (nth 2 info))))))
+  ;;     (setq-local default-directory
+  ;;                 (format "%s"
+  ;;                         (ob-ipython--normalize-session
+  ;;                          (cdr (assoc :pydir (nth 2 info))))))
+  ;;     (ob-ipython-mode 1)
+  ;;     ;; A few things to to do completions properly
+  ;;     ;; 1.  use company-ob-ipython then company-anaconda
+  ;;     ;;     anaconda will work before a block is executed
+  ;;     ;;     and is useful for getting documentation
+  ;;     ;; 2. set company-idle-delay to nil and bind a key for completion (C-n)
+  ;;     ;;    this is because company-ob-ipython is slow
+  ;;     ;;    see https://github.com/gregsexton/ob-ipython/issues/151
+  ;;     ;;    Two possible ways:
+  ;;     ;;      a. (current) bind to company-ob-ipython (then don't put it in backends and keep delay finite)
+  ;;     ;;      b. bind to company-indent-or-complete-common
+  ;;     ;;    ISSUE: the complete binding seems to not work with :local
+  ;;     ;; 3. for docs from parts anaconda can't track we bind a key to
+  ;;     ;;    ob-ipython-complete (C-S-k)
+  ;;     ;;    could replace with conditional map (when anaconda fails) so K can be used
+  ;;     (when (featurep! :completion company)
+  ;;       (setq-local company-backends
+  ;;                   '(company-anaconda
+  ;;                     company-dabbrev
+  ;;                     company-files
+  ;;                     company-yasnippet))
+  ;;       (setq-local company-idle-delay 0.1))
+  ;;     (map! :local
+  ;;           :desc "ob-ipython-inspect" :n "C-S-k" #'ob-ipython-inspect
+  ;;           :desc "ob ipython completion" :i "C-n" #'company-ob-ipython)
+  ;;     (when (featurep 'lpy)
+  ;;       (setq lispy-python-proc
+  ;;             (format "Python:ob-ipython-%s"
+  ;;                     (ob-ipython--normalize-session
+  ;;                      (cdr (assoc :session (nth 2 info)))))
+  ;;             lispy--python-middleware-loaded-p nil)
+  ;;       (lispy--python-middleware-load))
+  ;;     )
+  ;;     ;; 4. fix repl completion? company-capf seems to work inconsistently (C-x C-o)
+  ;;     ;;    python-shell-completion-complete-or-indent seems to work (TAB = C-i)
+  ;;     ;;    but is annoying when there are multiple choices
+  ;;   (advice-add '+org*org-babel-edit-prep:ipython :override #'+org*org-babel-edit-prep:ipython-complete)
 
-    ;; from https://github.com/gregsexton/ob-ipython/issues/135#issuecomment-397463174
-    ;; (advice-add 'ob-ipython--collect-json :before
-    ;;             (lambda (&rest args)
-    ;;               (when (re-search-forward "{" nil t)
-    ;;                 (backward-char))))
-    )
+  ;;   ;; from https://github.com/gregsexton/ob-ipython/issues/135#issuecomment-397463174
+  ;;   ;; (advice-add 'ob-ipython--collect-json :before
+  ;;   ;;             (lambda (&rest args)
+  ;;   ;;               (when (re-search-forward "{" nil t)
+  ;;   ;;                 (backward-char))))
+  ;;   )
 
   ; don't want return to execute src blocks
   ; since function is autoloaded we override it with an advice
@@ -340,6 +343,7 @@
         ;; :desc "Mail" :n "m" #'=email
         :desc "Mail" :n "m" #'mu4e
         :desc "Processes" :n "p" #'list-processes
+        :desc "Jupyter-repl" :n "j" #'jupyter-run-repl
         :desc "External Termite" :n "t" #'open-termite
         :desc "External Ranger" :n "r" #'open-ranger)
       :prefix "m" :desc "schedule" :n "s" #'org-schedule)
@@ -385,3 +389,59 @@ Plain `C-u' (no number) uses `fill-column' as LEN."
 ;; So I will not se pyenv versions here
 ;; (doom-modeline-mode) ; hack to make pyenv-mode-set not have issues?
 ;; (pyenv-mode-set "anaconda3-4.4.0")
+
+
+;; risky patch hack???
+(defun list-processes--refresh ()
+  "Recompute the list of processes for the Process List buffer.
+Also, delete any process that is exited or signaled."
+  (setq tabulated-list-entries nil)
+  (dolist (p (process-list))
+    (cond ((memq (process-status p) '(exit signal closed))
+           (delete-process p))
+          ((or (not process-menu-query-only)
+               (process-query-on-exit-flag p))
+           (let* ((buf (process-buffer p))
+                  (type (process-type p))
+                  (pid  (if (process-id p) (format "%d" (process-id p)) "--"))
+                  (name (process-name p))
+                  (status (symbol-name (process-status p)))
+                  (buf-label (if (buffer-live-p buf)
+                                 `(,(buffer-name buf)
+                                   face link
+                                   help-echo ,(format-message
+                                               "Visit buffer `%s'"
+                                               (buffer-name buf))
+                                   follow-link t
+                                   process-buffer ,buf
+                                   action process-menu-visit-buffer)
+                               "--"))
+                  (tty (or (process-tty-name p) "--"))
+                  (cmd
+                   (if (memq type '(network serial))
+                       (let ((contact (process-contact p t)))
+                         (if (eq type 'network)
+                             (format "(%s %s)"
+                                     (if (plist-get contact :type)
+                                         "datagram"
+                                       "network")
+                                     (if (plist-get contact :server)
+                                         (format "server on %s"
+                                                 (or
+                                                  (plist-get contact :host)
+                                                  (plist-get contact :local)))
+                                       (format "connection to %s"
+                                               (plist-get contact :host))))
+                           (format "(serial port %s%s)"
+                                   (or (plist-get contact :port) "?")
+                                   (let ((speed (plist-get contact :speed)))
+                                     (if speed
+                                         (format " at %s b/s" speed)
+                                       "")))))
+                     ;; ACTUAL CHANGE HERE
+                     ;; (mapconcat 'identity (process-command p) " "))))
+                     (if (not (stringp (process-command p))) ""
+                       (mapconcat 'identity (process-command p) " ")))))
+             (push (list p (vector name pid status buf-label tty cmd))
+                   tabulated-list-entries)))))
+  (tabulated-list-init-header))
