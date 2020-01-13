@@ -2,7 +2,9 @@
 
 (package! ox-dnd
   :recipe (
-           :fetcher
+           :type
+           git
+           :host
            github
            :repo
            "xeals/emacs-org-dnd"

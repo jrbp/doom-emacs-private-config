@@ -325,7 +325,6 @@
 
   )                                    
 
-(pyenv-mode-set "anaconda3-4.4.0")
 (setenv "PYTHONPATH" "/home/john/scripts/awful_pip_prefix_thing/lib/python3.6/site-packages/:/home/john/scripts/pyMods/:")
 ; (setq conda-anaconda-home "/home/john/.pyenv/versions/anaconda3-4.4.0")
 
@@ -338,7 +337,8 @@
 (map! :leader
       (:desc "App" :prefix "a"
         :desc "Ielm" :n "i" #'ielm
-        :desc "Mail" :n "m" #'=email
+        ;; :desc "Mail" :n "m" #'=email
+        :desc "Mail" :n "m" #'mu4e
         :desc "Processes" :n "p" #'list-processes
         :desc "External Termite" :n "t" #'open-termite
         :desc "External Ranger" :n "r" #'open-ranger)
@@ -380,3 +380,8 @@ Plain `C-u' (no number) uses `fill-column' as LEN."
           (message "Line %d: %d chars" (line-number-at-pos) len-found))
       (goto-line start-line)
       (message "Not found"))))
+
+;; Now it reads whatever the version in that dir is, which is a better practice anyway
+;; So I will not se pyenv versions here
+;; (doom-modeline-mode) ; hack to make pyenv-mode-set not have issues?
+;; (pyenv-mode-set "anaconda3-4.4.0")
