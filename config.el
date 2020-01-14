@@ -91,6 +91,11 @@
   (set-company-backend! 'org-mode
     'company-capf) ; put this in front so completions work for jupyter
 
+
+  ;; for inline latex
+  (plist-put org-format-latex-options :scale 3)
+  (setq org-latex-packages-alist '(("" "braket" t)))
+
   ; (add-hook! 'org-mode-hook (setq-local display-line-numbers 'nil)) ; for newer version of doom i reverted from
   ; org was getting slow, disabling some things for speed up here:
   (remove-hook! 'org-mode-hook #'+org|enable-auto-update-cookies)
