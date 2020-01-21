@@ -70,7 +70,7 @@
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       dired             ; making dired pretty [functional]
+       (dired +ranger)            ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
        ;; imenu doesn't seem to be loaded anymore, maybe in core??            ; an imenu sidebar and searchable code index
        ;;ibuffer           ; interactive buffer management
