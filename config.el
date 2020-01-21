@@ -88,9 +88,17 @@
            "All inboxes" ?i))))
 
 (after! org
+  ;;emacs-jupyter related
   (set-company-backend! 'org-mode
     'company-capf) ; put this in front so completions work for jupyter
-
+  ;; macro to convert old ob-ipython blocks to emacs-jupyter blocks
+  (fset 'obipy-to-jup
+        (lambda (&optional arg) "Keyboard macro." (interactive "p")
+          (kmacro-exec-ring-item (quote ([3 22 117 69 108 108 67 106 117 112 121 116 101 114 45 112 121 116 104 111 110 32 58 115 101 115 115 105 111 110 32 112 121 32 58 97 115 121 110 99 32 121 101 115 escape] 0 "%d")) arg)))
+  ;; so that in inspect buffer we can sort of go to the definition (at least the file)
+  (map! :mode help-mode
+        :desc "find-file-at-point"
+        :n [C-return] 'find-file-at-point)
 
   ;; for inline latex
   (plist-put org-format-latex-options :scale 3)
