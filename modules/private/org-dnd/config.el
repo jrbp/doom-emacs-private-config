@@ -51,16 +51,13 @@
          "end{tabular}"
          (format "end{%s}" (if long "dndlongtable" "dndtable"))
          (replace-regexp-in-string
-          "{table}"
-          "{table*}"
+          "\\\\\\(begin\\|end\\){center}\n?"
+          ""
           (replace-regexp-in-string
-           "\\\\\\(begin\\|end\\){center}\n?"
+           "\\\\centering"
            ""
-            (replace-regexp-in-string
-             "\\\\centering"
-             ""
-             (org-latex-table table contents info)))))))));)
-
+           (org-latex-table table contents info))))))));))
+ 
   ; update table values on export
   (advice-add 'org-dnd-export-to-pdf :before
               (lambda (&rest r) (org-table-iterate-buffer-tables)))
