@@ -1,6 +1,7 @@
 ;;; private/org-dnd/config.el -*- lexical-binding: t; -*-
 
-(def-package! ox-dnd
+;;(def-package! ox-dnd ;def-package! renamed to use-package!
+(use-package! ox-dnd
   :config
   ; allow for dndlongtable (could have just set it in :init instead of replacing)
   (setf (cadr (assoc "dnd" org-latex-classes))

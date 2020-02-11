@@ -1,5 +1,6 @@
 ;;; private/org-ref/config.el -*- lexical-binding: t; -*-
-(def-package! org-ref
+;;(def-package! org-ref ;def-package! renamed to use-package!
+(use-package! org-ref
   :config
   (setq reftex-default-bibliography '("~/org/references/misc/references.bib"))
   ;;
