@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: pmg cifwriter
+# key: cif
+# --
+from pymatgen.io.cif import CifWriter
+cw = CifWriter(${1:struct}, symprec=0.001)
+cw.write_file(${2:file})
