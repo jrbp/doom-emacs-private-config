@@ -7,6 +7,7 @@
         "\\documentclass[letterpaper,10pt,twoside,twocolumn,openany]{book}
 [NO-DEFAULT-PACKAGES]
 \\usepackage[AUTO]{babel}
+\\usepackage{placeins}
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
 \\usepackage{hyperref}
