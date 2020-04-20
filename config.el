@@ -175,7 +175,7 @@
           "* %?\n  %i %a %U")
          ("s" "Someday" entry (file+headline "~/org/someday.org" "Tasks")
           "* TODO %?\n  %i %a %U")
-         ("a" "Appointments" entry (file+headline "~/org/master.org" "Misc appointments")
+         ("a" "Appointments" entry (file+headline "~/org/master.org" "Appointments")
           "* %?\n  %i %a %U")
          ("n" "Notes" entry (file+headline "~/org/master.org" "Notes")
           "* %?\n  %i %a %U")
