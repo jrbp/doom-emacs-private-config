@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: enum
+# key: en
+# condition: t
+# --
+
+\begin{enumerate}
+    \item $0
+\end{enumerate}
