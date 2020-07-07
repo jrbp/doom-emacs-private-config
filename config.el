@@ -71,7 +71,7 @@
         mu4e-view-show-addresses t)
   ;; Mail directory shortcuts
   (setq mu4e-maildir-shortcuts
-        '(("/RUphysics/INBOX" . ?j)))
+        '(("/INBOX" . ?j)))
   
   ;;; Bookmarks
   (setq mu4e-bookmarks
