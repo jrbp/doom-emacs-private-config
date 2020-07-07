@@ -41,7 +41,8 @@
    :after latex
    :desc "Insert citation from bib"
    :map LaTeX-mode-map
-   "C-c l" #'org-ref-helm-insert-cite-link)
+   "C-c l" #'org-ref-helm-insert-cite-link
+   "C-c k" #'org-ref-latex-click)
 
   (map!
    :after bibtex
