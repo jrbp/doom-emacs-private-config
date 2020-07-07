@@ -25,6 +25,11 @@
         (t
          (insert (expand-file-name filename)))))
 
+;; fixing where this was broken used to use evil-write instead of save-buffer
+(defun evil-org-edit-src-exit ()
+  "Save then `evil-edit-src-exit'."
+  (interactive)
+  (mapc #'call-interactively '(save-buffer org-edit-src-exit)))
 
 (defun open-termite ()
   (interactive)
