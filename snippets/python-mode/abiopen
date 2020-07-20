@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: abiopen
+# key: abi
+# condition: t                                    
+# --
+import os
+import abipy
+from abipy.abilab import abiopen
+file_dir ='${1:~/}'
+with abiopen(os.path.join(file_dir, '${2:abifile}')) as abifile:

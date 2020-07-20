@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: pmg spacegroup analyzer
+# key: spg
+# --
+from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
+sga = SpacegroupAnalyzer(${1:struct}, symprec=1e-5)
+sg = sga.get_space_group_symbol()
+sgn = sga.get_space_group_number()
+sym_dataset = sga.get_symmetry_dataset()
