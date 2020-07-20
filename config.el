@@ -25,75 +25,99 @@
         (t
          (insert (expand-file-name filename)))))
 
-;; fixing where this was broken used to use evil-write instead of save-buffer
-(defun evil-org-edit-src-exit ()
-  "Save then `evil-edit-src-exit'."
-  (interactive)
-  (mapc #'call-interactively '(save-buffer org-edit-src-exit)))
 
-(defun open-termite ()
+; (defun open-termite ()
+;   (interactive)
+;   (call-process-shell-command "termite&" nil 0))
+(defun open-iterm ()
+  ;; currently useless as it always opens in home
   (interactive)
-  (call-process-shell-command "termite&" nil 0))
-
-(defun open-ranger ()
-  (interactive)
-  (call-process-shell-command "termite -e ranger&" nil 0))
+  (call-process-shell-command "open -aiterm&" nil 0))
+;
+; (defun open-ranger ()
+;   (interactive)
+;   (call-process-shell-command "termite -e ranger&" nil 0))
 
 ; terrible hack for sshfs files to not be super slow
-(defun open-as-sym-link (f)
-  (interactive "fFile:")
-  (let ((sl
-        (concat
-         (file-name-as-directory "/home/john/.tmp_sshfs_symlinks")
-         (file-name-nondirectory f))))
-    (if (not (file-exists-p sl))
-        (f-symlink f sl))
-    (switch-to-buffer (find-file sl))))
+; (defun open-as-sym-link (f)
+;   (interactive "fFile:")
+;   (let ((sl
+;         (concat
+;          (file-name-as-directory "/home/john/.tmp_sshfs_symlinks")
+;          (file-name-nondirectory f))))
+;     (if (not (file-exists-p sl))
+;         (f-symlink f sl))
+;     (switch-to-buffer (find-file sl))))
 
-(after! mu4e
-  (add-to-list 'mu4e-view-actions
-               '("ViewInBrowser" . mu4e-action-view-in-browser) t)
- ; doom doesn't load org-mu4e until composing
- ; this stops us from using its org-capture function
-  (require 'org-mu4e nil 'noerror)
-  ;; setting up email in mu4e
-  (setq message-send-mail-function 'message-send-mail-with-sendmail)
-  (setq sendmail-program "msmtp")
-  (set-email-account! "RUphysics"
-      '((mu4e-sent-folder       . "/RUphysics/Sent")
-        (mu4e-drafts-folder     . "/RUphysics/Drafts")
-        (mu4e-trash-folder      . "/RUphysics/Trash")
-        (mu4e-refile-folder     . "/RUphysics/Archive")
-        (smtpmail-smtp-user     . "jrb285@physics.rutgers.edu")
-        (user-mail-address      . "jrb285@physics.rutgers.edu")
-        (user-full-name         . "John Bonini"))
-      t)
-  ;;; Set up some common mu4e variables
-  (setq mu4e-update-interval 300
-        mu4e-compose-signature-auto-include nil
-        mu4e-view-show-images t
-        mu4e-html2text-command "w3m -T text/html"
-        mu4e-view-show-addresses t)
-  ;; Mail directory shortcuts
-  (setq mu4e-maildir-shortcuts
-        '(("/INBOX" . ?j)))
-  
-  ;;; Bookmarks
-  (setq mu4e-bookmarks
-        `(("flag:unread AND NOT flag:trashed AND NOT maildir:/RUphysics/Archive" "Unread messages" ?u)
-          ("date:today..now" "Today's messages" ?t)
-          ("date:7d..now" "Last 7 days" ?w)
-          ("flag:flagged" "flagged" ?f)
-          ("mime:image/*" "Messages with images" ?p)
-          (,(mapconcat 'identity
-                       (mapcar
-                        (lambda (maildir)
-                          (concat "maildir:" (car maildir)))
-                        mu4e-maildir-shortcuts) " OR ")
-           "All inboxes" ?i))))
+; (after! mu4e
+;   (add-to-list 'mu4e-view-actions
+;                '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+;  ; doom doesn't load org-mu4e until composing
+;  ; this stops us from using its org-capture function
+;   (require 'org-mu4e nil 'noerror)
+;   ;; setting up email in mu4e
+;   (setq message-send-mail-function 'message-send-mail-with-sendmail)
+;   (setq sendmail-program "msmtp")
+;   (set-email-account! "RUphysics"
+;       '((mu4e-sent-folder       . "/RUphysics/Sent")
+;         (mu4e-drafts-folder     . "/RUphysics/Drafts")
+;         (mu4e-trash-folder      . "/RUphysics/Trash")
+;         (mu4e-refile-folder     . "/RUphysics/Archive")
+;         (smtpmail-smtp-user     . "jrb285@physics.rutgers.edu")
+;         (user-mail-address      . "jrb285@physics.rutgers.edu")
+;         (user-full-name         . "John Bonini"))
+;       t)
+;   ;;; Set up some common mu4e variables
+;   (setq mu4e-update-interval 300
+;         mu4e-compose-signature-auto-include nil
+;         mu4e-view-show-images t
+;         mu4e-html2text-command "w3m -T text/html"
+;         mu4e-view-show-addresses t)
+;   ;; Mail directory shortcuts
+;   (setq mu4e-maildir-shortcuts
+;         '(("/INBOX" . ?j)))
+;
+;   ;;; Bookmarks
+;   (setq mu4e-bookmarks
+;         `(("flag:unread AND NOT flag:trashed AND NOT maildir:/RUphysics/Archive" "Unread messages" ?u)
+;           ("date:today..now" "Today's messages" ?t)
+;           ("date:7d..now" "Last 7 days" ?w)
+;           ("flag:flagged" "flagged" ?f)
+;           ("mime:image/*" "Messages with images" ?p)
+;           (,(mapconcat 'identity
+;                        (mapcar
+;                         (lambda (maildir)
+;                           (concat "maildir:" (car maildir)))
+;                         mu4e-maildir-shortcuts) " OR ")
+;            "All inboxes" ?i))))
+
+(setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
+(setq exec-path (append exec-path '("/Library/TeX/texbin")))
+
+
+; never did the google developers steps
+; (defun my-open-calendar ()
+;   (interactive)
+;   (cfw:open-calendar-buffer
+;    :contents-sources
+;    (list
+;     (cfw:org-create-source "Green")  ; orgmode source
+;     ;; (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+;    )))
+;
+; (defun cfw:open-org-calendar-with-cal1 ()
+;   (interactive)
+;   (let ((org-agenda-files '("/Users/jbonini/Dropbox_simons/org/gcal.org"))) ;;can use directory
+;     (call-interactively #'+calendar/open-calendar)))
 
 (after! org
-  ;;emacs-jupyter related
+  (after! org-noter
+    (setq org-noter-default-notes-file-names '("notes.org"))
+    (setq org-noter-notes-search-path '("/Users/jbonini/Dropbox_simons/org/references/misc" "/Users/jbonini/Dropbox_simons/org/"))
+    (map! :mode pdf-view-mode
+          :desc "insert a note"
+          :n "i" ))
+
   (set-company-backend! 'org-mode
     'company-capf) ; put this in front so completions work for jupyter
   ;; macro to convert old ob-ipython blocks to emacs-jupyter blocks
@@ -104,6 +128,7 @@
   (map! :mode help-mode
         :desc "find-file-at-point"
         :n [C-return] 'find-file-at-point)
+
 
   ;; for inline latex
   (plist-put org-format-latex-options :scale 3)
@@ -117,12 +142,14 @@
   ; see goto-long-line which has been added to this config
   ;
   ; I didn't like the auto completeion of the formatting stuff
-  (sp-with-modes 'org-mode
-    (sp-local-pair "*" nil :actions :rem)
-    (sp-local-pair "_" nil :actions :rem)
-    (sp-local-pair "/" nil :actions :rem)
-    (sp-local-pair "~" nil :actions :rem)
-    (sp-local-pair "=" nil :actions :rem))
+  ; below caused issue on osx, commenting it out and still have the desired behavior
+  ; maybe new version of doom got rid of smartparen for these
+  ; (sp-with-modes 'org-mode
+  ;   (sp-local-pair "*" nil :actions :rem)
+  ;   (sp-local-pair "_" nil :actions :rem)
+  ;   (sp-local-pair "/" nil :actions :rem)
+  ;   (sp-local-pair "~" nil :actions :rem)
+  ;   (sp-local-pair "=" nil :actions :rem))
 
 
   ; Didn't like that new headings on C-return weren't put in at point
@@ -133,7 +160,9 @@
 
   (add-to-list 'org-file-apps '("\\.vesta\\'" . "VESTA %s"))
   (add-to-list 'org-file-apps '("\\.nb\\'" . "mathematica %s"))
-  (add-to-list 'org-file-apps '("\\.pdf\\'" . "zathura %s"))
+  ; (add-to-list 'org-file-apps '("\\.pdf\\'" . "open %s"))
+  (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
+  (add-to-list 'org-file-apps '("\\.pptx\\'" . "open %s"))
   (add-to-list 'org-file-apps '("\\.odp\\'" . "libreoffice %s"))
   (setq org-export-with-sub-superscripts (quote {}))
   (setq org-image-actual-width 700)
@@ -141,9 +170,8 @@
   (add-to-list 'org-src-lang-modes '("ipython" . python))
   ;; I like when org opens links in new windows/frames
   (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
-
   (if (featurep! :private frames-only)
-    (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
+      (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
     (setq org-src-window-setup 'other-window)
     )
 
@@ -346,13 +374,9 @@
 
   )                                    
 
-(setenv "PYTHONPATH" "/home/john/scripts/awful_pip_prefix_thing/lib/python3.6/site-packages/:/home/john/scripts/pyMods/:")
+; (setenv "PYTHONPATH" "/home/john/scripts/awful_pip_prefix_thing/lib/python3.6/site-packages/:/home/john/scripts/pyMods/:")
 ; (setq conda-anaconda-home "/home/john/.pyenv/versions/anaconda3-4.4.0")
 
-(when (featurep! :private frames-only)
-  (after!  persp-mode
-    (setq persp-interactive-init-frame-behaviour-override -1
-          persp-emacsclient-init-frame-behaviour-override -1)))
 
 ;; key binds
 (map! :leader
@@ -362,7 +386,8 @@
         :desc "Mail" :n "m" #'mu4e
         :desc "Processes" :n "p" #'list-processes
         :desc "Jupyter-repl" :n "j" #'jupyter-run-repl
-        :desc "External Termite" :n "t" #'open-termite
+        ; :desc "External Termite" :n "t" #'open-termite
+        :desc "External Iterm" :n "t" #'open-iterm
         :desc "External Ranger" :n "r" #'open-ranger)
       :prefix "m" :desc "schedule" :n "s" #'org-schedule)
 
@@ -407,9 +432,89 @@ Plain `C-u' (no number) uses `fill-column' as LEN."
 ;; So I will not se pyenv versions here
 ;; (doom-modeline-mode) ; hack to make pyenv-mode-set not have issues?
 ;; (pyenv-mode-set "anaconda3-4.4.0")
+;;
+;;
+;;
+
+(if (featurep! :private frames-only)
+    (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
+  (setq org-src-window-setup 'other-window)
+  (after!  persp-mode
+    (setq persp-interactive-init-frame-behaviour-override -1
+          persp-emacsclient-init-frame-behaviour-override -1))
+  )
+
+;; fixing where this was broken used to use evil-write instead of save-buffer
+;; it used to be that I could just redefine here, but that seems to not work
+;; renaming my functiona and putting in as advice instead
+; (defun evil-org-edit-src-exit ()
+(defun replace-evil-org-edit-src-exit ()
+  "Save then `evil-edit-src-exit'."
+  (interactive)
+  (mapc #'call-interactively '(save-buffer org-edit-src-exit)))
+(advice-add 'evil-org-edit-src-exit :override
+            'replace-evil-org-edit-src-exit)
 
 
 ;; risky patch hack???
+;;; (defun list-processes--refresh ()
+;;;   "Recompute the list of processes for the Process List buffer.
+;;; Also, delete any process that is exited or signaled."
+;;;   (setq tabulated-list-entries nil)
+;;;   (dolist (p (process-list))
+;;;     (cond ((memq (process-status p) '(exit signal closed))
+;;;            (delete-process p))
+;;;           ((or (not process-menu-query-only)
+;;;                (process-query-on-exit-flag p))
+;;;            (let* ((buf (process-buffer p))
+;;;                   (type (process-type p))
+;;;                   (pid  (if (process-id p) (format "%d" (process-id p)) "--"))
+;;;                   (name (process-name p))
+;;;                   (status (symbol-name (process-status p)))
+;;;                   (buf-label (if (buffer-live-p buf)
+;;;                                  `(,(buffer-name buf)
+;;;                                    face link
+;;;                                    help-echo ,(format-message
+;;;                                                "Visit buffer `%s'"
+;;;                                                (buffer-name buf))
+;;;                                    follow-link t
+;;;                                    process-buffer ,buf
+;;;                                    action process-menu-visit-buffer)
+;;;                                "--"))
+;;;                   (tty (or (process-tty-name p) "--"))
+;;;                   (cmd
+;;;                    (if (memq type '(network serial))
+;;;                        (let ((contact (process-contact p t)))
+;;;                          (if (eq type 'network)
+;;;                              (format "(%s %s)"
+;;;                                      (if (plist-get contact :type)
+;;;                                          "datagram"
+;;;                                        "network")
+;;;                                      (if (plist-get contact :server)
+;;;                                          (format "server on %s"
+;;;                                                  (or
+;;;                                                   (plist-get contact :host)
+;;;                                                   (plist-get contact :local)))
+;;;                                        (format "connection to %s"
+;;;                                                (plist-get contact :host))))
+;;;                            (format "(serial port %s%s)"
+;;;                                    (or (plist-get contact :port) "?")
+;;;                                    (let ((speed (plist-get contact :speed)))
+;;;                                      (if speed
+;;;                                          (format " at %s b/s" speed)
+;;;                                        "")))))
+;;;                      ;; ACTUAL CHANGE HERE
+;;;                      ;; (mapconcat 'identity (process-command p) " "))))
+;;;                      (if (not (stringp (process-command p))) ""
+;;;                        (mapconcat 'identity (process-command p) " ")))))
+;;;              (push (list p (vector name pid status buf-label tty cmd))
+;;;                    tabulated-list-entries)))))
+;;;   (tabulated-list-init-header))
+
+
+
+;; Now with mac osx version, maybe
+;;
 (defun list-processes--refresh ()
   "Recompute the list of processes for the Process List buffer.
 Also, delete any process that is exited or signaled."
@@ -435,31 +540,58 @@ Also, delete any process that is exited or signaled."
                                    action process-menu-visit-buffer)
                                "--"))
                   (tty (or (process-tty-name p) "--"))
+                  (thread
+                   (cond
+                    ((or
+                      (null (process-thread p))
+                      (not (fboundp 'thread-name))) "--")
+                    ((eq (process-thread p) main-thread) "Main")
+                    ((thread-name (process-thread p)))
+                    (t "--")))
                   (cmd
                    (if (memq type '(network serial))
-                       (let ((contact (process-contact p t)))
+                       (let ((contact (process-contact p t t)))
                          (if (eq type 'network)
                              (format "(%s %s)"
                                      (if (plist-get contact :type)
                                          "datagram"
                                        "network")
                                      (if (plist-get contact :server)
-                                         (format "server on %s"
-                                                 (or
-                                                  (plist-get contact :host)
-                                                  (plist-get contact :local)))
-                                       (format "connection to %s"
-                                               (plist-get contact :host))))
+                                         (format
+                                          "server on %s"
+                                          (if (plist-get contact :host)
+                                              (format "%s:%s"
+                                                      (plist-get contact :host)
+                                                      (plist-get
+                                                       contact :service))
+                                            (plist-get contact :local)))
+                                       (format "connection to %s:%s"
+                                               (plist-get contact :host)
+                                               (plist-get contact :service))))
                            (format "(serial port %s%s)"
                                    (or (plist-get contact :port) "?")
                                    (let ((speed (plist-get contact :speed)))
                                      (if speed
                                          (format " at %s b/s" speed)
                                        "")))))
-                     ;; ACTUAL CHANGE HERE
-                     ;; (mapconcat 'identity (process-command p) " "))))
+                     ;;(mapconcat 'identity (process-command p) " "))))
                      (if (not (stringp (process-command p))) ""
-                       (mapconcat 'identity (process-command p) " ")))))
-             (push (list p (vector name pid status buf-label tty cmd))
-                   tabulated-list-entries)))))
+                       mapconcat 'identity (process-command p) " "))))
+             (push (list p (vector name pid status buf-label tty thread cmd))
+   tabulated-list-entries)))))
   (tabulated-list-init-header))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   '((org-ref-pdf-directory . "/Documents/papers/pto_divacancies/")
+     (org-ref-pdf-directory . "~/Documents/papers/wannier_pol/"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

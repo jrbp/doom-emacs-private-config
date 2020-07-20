@@ -21,8 +21,9 @@
 
        :completion
        (company          ; the ultimate code completion backend
-        ; +auto)           ; as-you-type code completion
-        +childframe)
+         +auto)           ; as-you-type code completion
+        ; +childframe)
+        ;)
        (helm             ; the *other* search engine for love and life
         +fuzzy)          ; enable fuzzy search backend for helm
        ;;ido               ; the other *other* search engine...
@@ -52,7 +53,7 @@
        vc-gutter         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
-       workspaces        ; tab emulation, persistence & separate workspaces
+       ;workspaces        ; tab emulation, persistence & separate workspaces
        ;;zen               ; distraction-free coding or writing
 
        :editor
@@ -84,7 +85,8 @@
 
        :checkers
        spell
-       (syntax +childframe)
+       (syntax ;+childframe)
+        )
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
@@ -148,6 +150,7 @@
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
+        +noter
         +attach          ; custom attachment system
         +babel           ; running code in org
         ;; +ipython           ; ob-ipython
@@ -192,6 +195,7 @@
        ;;(wanderlust +gmail)
 
        :app
+       calendar
        ;;irc               ; how neckbeards socialize
        (rss +org)        ; emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
