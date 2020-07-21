@@ -109,6 +109,8 @@
 ;   (interactive)
 ;   (let ((org-agenda-files '("/Users/jbonini/Dropbox_simons/org/gcal.org"))) ;;can use directory
 ;     (call-interactively #'+calendar/open-calendar)))
+;
+(add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 
 (after! org
   (after! org-noter
@@ -382,6 +384,7 @@
 (map! :leader
       (:desc "App" :prefix "a"
         :desc "Ielm" :n "i" #'ielm
+        :desc "elfeed" :n "e" #'elfeed
         ;; :desc "Mail" :n "m" #'=email
         :desc "Mail" :n "m" #'mu4e
         :desc "Processes" :n "p" #'list-processes
