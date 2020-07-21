@@ -386,7 +386,7 @@
         :desc "Ielm" :n "i" #'ielm
         :desc "elfeed" :n "e" #'elfeed
         ;; :desc "Mail" :n "m" #'=email
-        :desc "Mail" :n "m" #'mu4e
+        ;;:desc "Mail" :n "m" #'mu4e
         :desc "Processes" :n "p" #'list-processes
         :desc "Jupyter-repl" :n "j" #'jupyter-run-repl
         ; :desc "External Termite" :n "t" #'open-termite
