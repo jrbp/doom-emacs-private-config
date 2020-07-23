@@ -387,8 +387,7 @@
         ;;:desc "Mail" :n "m" #'mu4e
         :desc "Processes" :n "p" #'list-processes
         :desc "Jupyter-repl" :n "j" #'jupyter-run-repl
-        ; :desc "External Termite" :n "t" #'open-termite
-        :desc "External Iterm" :n "t" #'open-iterm
+        :desc "External term" :n "t" #'open-term
         :desc "External Ranger" :n "r" #'open-ranger)
       :prefix "m" :desc "schedule" :n "s" #'org-schedule)
 
