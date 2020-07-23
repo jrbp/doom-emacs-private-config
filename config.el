@@ -25,14 +25,12 @@
         (t
          (insert (expand-file-name filename)))))
 
-
-; (defun open-termite ()
-;   (interactive)
-;   (call-process-shell-command "termite&" nil 0))
-(defun open-iterm ()
+((defun open-term ()
   ;; currently useless as it always opens in home
   (interactive)
-  (call-process-shell-command "open -aiterm&" nil 0))
+  (call-process-shell-command "open -aiterm&" nil 0)) ;; mac
+;   (call-process-shell-command "termite&" nil 0)) ;; thinkpad
+;   (call-process-shell-command "gnome-terminal" nil 0)) ;; flatiron desktop (needs testing)
 ;
 ; (defun open-ranger ()
 ;   (interactive)
