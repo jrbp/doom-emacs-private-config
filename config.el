@@ -25,7 +25,7 @@
         (t
          (insert (expand-file-name filename)))))
 
-((defun open-term ()
+(defun open-term ()
   ;; currently useless as it always opens in home
   (interactive)
   (call-process-shell-command "open -aiterm&" nil 0)) ;; mac
