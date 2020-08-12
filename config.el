@@ -25,15 +25,12 @@
         (t
          (insert (expand-file-name filename)))))
 
-;(evil-set-initial-state 'vterm-mode "emacs")
-
-; (defun open-termite ()
-;   (interactive)
-;   (call-process-shell-command "termite&" nil 0))
-(defun open-iterm ()
+(defun open-term ()
   ;; currently useless as it always opens in home
   (interactive)
-  (call-process-shell-command "open -aiterm&" nil 0))
+  (call-process-shell-command "open -aiterm&" nil 0)) ;; mac
+;   (call-process-shell-command "termite&" nil 0)) ;; thinkpad
+;   (call-process-shell-command "gnome-terminal" nil 0)) ;; flatiron desktop (needs testing)
 ;
 ; (defun open-ranger ()
 ;   (interactive)
@@ -392,10 +389,8 @@
         ;;:desc "Mail" :n "m" #'mu4e
         :desc "Processes" :n "p" #'list-processes
         :desc "Jupyter-repl" :n "j" #'jupyter-run-repl
-        ; :desc "External Termite" :n "t" #'open-termite
-        :desc "External Iterm" :n "t" #'open-iterm
-        ;;:desc "External Ranger" :n "r" #'open-ranger
-        )
+        :desc "External term" :n "t" #'open-term
+        :desc "External Ranger" :n "r" #'open-ranger)
       :prefix "m" :desc "schedule" :n "s" #'org-schedule)
 
 (map! :leader
