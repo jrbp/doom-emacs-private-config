@@ -81,7 +81,7 @@
        eshell            ; a consistent, cross-platform shell (WIP)
        ;;shell             ; a terminal REPL for Emacs
        ;;term              ; terminals in Emacs
-       ;;vterm             ; another terminals in Emacs
+       (vterm +vterm)             ; another terminals in Emacs
 
        :checkers
        spell
@@ -219,7 +219,7 @@
        (default +bindings +snippets +evil-commands)
 
        :private ;; ~/.config/doom/modules/private/{...}
-       frames-only
+       ;; frames-only
        org-dnd
        super-agenda
        org-ref

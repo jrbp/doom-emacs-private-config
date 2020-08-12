@@ -28,9 +28,9 @@
 (defun open-term ()
   ;; currently useless as it always opens in home
   (interactive)
-  (call-process-shell-command "open -aiterm&" nil 0)) ;; mac
+  ;(call-process-shell-command "open -aiterm&" nil 0)) ;; mac
 ;   (call-process-shell-command "termite&" nil 0)) ;; thinkpad
-;   (call-process-shell-command "gnome-terminal" nil 0)) ;; flatiron desktop (needs testing)
+   (call-process-shell-command "gnome-terminal" nil 0)) ;; flatiron desktop (needs testing)
 ;
 ; (defun open-ranger ()
 ;   (interactive)
@@ -89,8 +89,9 @@
 ;                         mu4e-maildir-shortcuts) " OR ")
 ;            "All inboxes" ?i))))
 
-(setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
-(setq exec-path (append exec-path '("/Library/TeX/texbin")))
+; mac specific
+;(setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
+;(setq exec-path (append exec-path '("/Library/TeX/texbin")))
 
 
 ; never did the google developers steps
@@ -162,14 +163,14 @@
   (add-to-list 'org-file-apps '("\\.nb\\'" . "mathematica %s"))
   ; (add-to-list 'org-file-apps '("\\.pdf\\'" . "open %s"))
   (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
-  (add-to-list 'org-file-apps '("\\.pptx\\'" . "open %s"))
+  ;(add-to-list 'org-file-apps '("\\.pptx\\'" . "open %s"))
   (add-to-list 'org-file-apps '("\\.odp\\'" . "libreoffice %s"))
   (setq org-export-with-sub-superscripts (quote {}))
   (setq org-image-actual-width 700)
   ;; make code look nice even before session started
   (add-to-list 'org-src-lang-modes '("ipython" . python))
   ;; I like when org opens links in new windows/frames
-  (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
+  ;; (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
   (if (featurep! :private frames-only)
       (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
     (setq org-src-window-setup 'other-window)
@@ -512,74 +513,6 @@ Plain `C-u' (no number) uses `fill-column' as LEN."
 ;;;   (tabulated-list-init-header))
 
 
-
-;; Now with mac osx version, maybe
-;;
-(defun list-processes--refresh ()
-  "Recompute the list of processes for the Process List buffer.
-Also, delete any process that is exited or signaled."
-  (setq tabulated-list-entries nil)
-  (dolist (p (process-list))
-    (cond ((memq (process-status p) '(exit signal closed))
-           (delete-process p))
-          ((or (not process-menu-query-only)
-               (process-query-on-exit-flag p))
-           (let* ((buf (process-buffer p))
-                  (type (process-type p))
-                  (pid  (if (process-id p) (format "%d" (process-id p)) "--"))
-                  (name (process-name p))
-                  (status (symbol-name (process-status p)))
-                  (buf-label (if (buffer-live-p buf)
-                                 `(,(buffer-name buf)
-                                   face link
-                                   help-echo ,(format-message
-                                               "Visit buffer `%s'"
-                                               (buffer-name buf))
-                                   follow-link t
-                                   process-buffer ,buf
-                                   action process-menu-visit-buffer)
-                               "--"))
-                  (tty (or (process-tty-name p) "--"))
-                  (thread
-                   (cond
-                    ((or
-                      (null (process-thread p))
-                      (not (fboundp 'thread-name))) "--")
-                    ((eq (process-thread p) main-thread) "Main")
-                    ((thread-name (process-thread p)))
-                    (t "--")))
-                  (cmd
-                   (if (memq type '(network serial))
-                       (let ((contact (process-contact p t t)))
-                         (if (eq type 'network)
-                             (format "(%s %s)"
-                                     (if (plist-get contact :type)
-                                         "datagram"
-                                       "network")
-                                     (if (plist-get contact :server)
-                                         (format
-                                          "server on %s"
-                                          (if (plist-get contact :host)
-                                              (format "%s:%s"
-                                                      (plist-get contact :host)
-                                                      (plist-get
-                                                       contact :service))
-                                            (plist-get contact :local)))
-                                       (format "connection to %s:%s"
-                                               (plist-get contact :host)
-                                               (plist-get contact :service))))
-                           (format "(serial port %s%s)"
-                                   (or (plist-get contact :port) "?")
-                                   (let ((speed (plist-get contact :speed)))
-                                     (if speed
-                                         (format " at %s b/s" speed)
-                                       "")))))
-                     ;;(mapconcat 'identity (process-command p) " "))))
-                     (if (not (stringp (process-command p))) ""
-                       mapconcat 'identity (process-command p) " "))))
-             (push (list p (vector name pid status buf-label tty thread cmd))
-   tabulated-list-entries)))))
-  (tabulated-list-init-header))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
