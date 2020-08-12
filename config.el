@@ -25,6 +25,7 @@
         (t
          (insert (expand-file-name filename)))))
 
+;(evil-set-initial-state 'vterm-mode "emacs")
 
 ; (defun open-termite ()
 ;   (interactive)
@@ -170,8 +171,10 @@
   (setq org-image-actual-width 700)
   ;; make code look nice even before session started
   (add-to-list 'org-src-lang-modes '("ipython" . python))
+
   ;; I like when org opens links in new windows/frames
-  (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
+  ; (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
+
   (if (featurep! :private frames-only)
       (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
     (setq org-src-window-setup 'other-window)
@@ -391,7 +394,8 @@
         :desc "Jupyter-repl" :n "j" #'jupyter-run-repl
         ; :desc "External Termite" :n "t" #'open-termite
         :desc "External Iterm" :n "t" #'open-iterm
-        :desc "External Ranger" :n "r" #'open-ranger)
+        ;;:desc "External Ranger" :n "r" #'open-ranger
+        )
       :prefix "m" :desc "schedule" :n "s" #'org-schedule)
 
 (map! :leader
@@ -589,6 +593,8 @@ Also, delete any process that is exited or signaled."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   '("/Users/jbonini/org/master.org" "/Users/jbonini/org/adv_comp_phys.org" "/Users/jbonini/org/adv_stat_mech.org" "/Users/jbonini/org/archive.org" "/Users/jbonini/org/branch_choice.org" "/Users/jbonini/org/canadaRoadtrip.org" "/Users/jbonini/org/dielectric_slab_model.org" "/Users/jbonini/org/double_perovskite.org" "/Users/jbonini/org/elfeed.org" "/Users/jbonini/org/force_veolcity.org" "/Users/jbonini/org/fromStore.org" "/Users/jbonini/org/gcal.org" "/Users/jbonini/org/get_ORGanized.org" "/Users/jbonini/org/light_matter.org" "/Users/jbonini/org/misc-log.org" "/Users/jbonini/org/multipath_switching.org" "/Users/jbonini/org/music_experiments.org" "/Users/jbonini/org/perovskite_database.org" "/Users/jbonini/org/personal.org" "/Users/jbonini/org/personalfinance.org" "/Users/jbonini/org/post_march_meeting_snowboarding.org" "/Users/jbonini/org/pto_divacancies.org" "/Users/jbonini/org/ridgewayWedding.org" "/Users/jbonini/org/someday.org" "/Users/jbonini/org/thinkpad_configuration.org" "/Users/jbonini/org/topology.org" "/Users/jbonini/org/transparent_conductors.org" "/Users/jbonini/org/wannier_polarization.org" "/Users/jbonini/org/weeklyreview.org"))
  '(safe-local-variable-values
    '((org-ref-pdf-directory . "/Documents/papers/pto_divacancies/")
      (org-ref-pdf-directory . "~/Documents/papers/wannier_pol/"))))
