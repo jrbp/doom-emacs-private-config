@@ -36,13 +36,14 @@
 
 ;; popup rules break esc key in emacs mode within popup terminals
 ;; kind of a shame because otherwise the popup rules would be nice
-(after! vterm
-  (set-popup-rules!
-    '(("^\\*doom:\\(?:v?term\\|e?shell\\)-popup"  ; editing buffers (interaction required)
-                                        ; :vslot -5 :size 0.35 :select t :modeline nil :quit nil :ttl nil)
-       :ignore t)
-      ("^vterm" :ignore t)
-      )))
+; JUST USE C-c C-z
+;(after! vterm
+;  (set-popup-rules!
+;    '(("^\\*doom:\\(?:v?term\\|e?shell\\)-popup"  ; editing buffers (interaction required)
+;                                        ; :vslot -5 :size 0.35 :select t :modeline nil :quit nil :ttl nil)
+;       :ignore t)
+;      ("^vterm" :ignore t)
+;      )))
 
 ; never did the google developers steps
 ; (defun my-open-calendar ()
