@@ -21,8 +21,9 @@
 
        :completion
        (company          ; the ultimate code completion backend
-         +auto)           ; as-you-type code completion
-        ; +childframe)
+         +auto           ; as-you-type code completion
+         ;+childframe
+         )
         ;)
        (helm             ; the *other* search engine for love and life
         +fuzzy)          ; enable fuzzy search backend for helm
@@ -43,9 +44,9 @@
        nav-flash         ; blink the current line after jumping
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints ; replaced evil-goggles
-       ;(popup            ; tame sudden yet inevitable temporary windows
-       ; +all             ; catch all popups that start with an asterix
-       ; +defaults)       ; default popup rules
+       (popup            ; tame sudden yet inevitable temporary windows
+        +all             ; catch all popups that start with an asterix
+        +defaults)       ; default popup rules
        ;;pretty-code       ; replace bits of code with pretty symbols
        ;;tabs              ; an tab bar for Emacs
        ;;treemacs          ; a project drawer, like neotree but cooler
@@ -85,7 +86,8 @@
 
        :checkers
        spell
-       (syntax ;+childframe)
+       (syntax
+        ;+childframe
         )
        ;;grammar           ; tasing grammar mistake every you make
 
