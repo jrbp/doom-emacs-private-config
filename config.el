@@ -31,65 +31,6 @@
   ;(call-process-shell-command "open -aiterm&" nil 0)) ;; mac
 ;   (call-process-shell-command "termite&" nil 0)) ;; thinkpad
    (call-process-shell-command "gnome-terminal" nil 0)) ;; flatiron desktop (needs testing)
-;
-; (defun open-ranger ()
-;   (interactive)
-;   (call-process-shell-command "termite -e ranger&" nil 0))
-
-; terrible hack for sshfs files to not be super slow
-; (defun open-as-sym-link (f)
-;   (interactive "fFile:")
-;   (let ((sl
-;         (concat
-;          (file-name-as-directory "/home/john/.tmp_sshfs_symlinks")
-;          (file-name-nondirectory f))))
-;     (if (not (file-exists-p sl))
-;         (f-symlink f sl))
-;     (switch-to-buffer (find-file sl))))
-
-; (after! mu4e
-;   (add-to-list 'mu4e-view-actions
-;                '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-;  ; doom doesn't load org-mu4e until composing
-;  ; this stops us from using its org-capture function
-;   (require 'org-mu4e nil 'noerror)
-;   ;; setting up email in mu4e
-;   (setq message-send-mail-function 'message-send-mail-with-sendmail)
-;   (setq sendmail-program "msmtp")
-;   (set-email-account! "RUphysics"
-;       '((mu4e-sent-folder       . "/RUphysics/Sent")
-;         (mu4e-drafts-folder     . "/RUphysics/Drafts")
-;         (mu4e-trash-folder      . "/RUphysics/Trash")
-;         (mu4e-refile-folder     . "/RUphysics/Archive")
-;         (smtpmail-smtp-user     . "jrb285@physics.rutgers.edu")
-;         (user-mail-address      . "jrb285@physics.rutgers.edu")
-;         (user-full-name         . "John Bonini"))
-;       t)
-;   ;;; Set up some common mu4e variables
-;   (setq mu4e-update-interval 300
-;         mu4e-compose-signature-auto-include nil
-;         mu4e-view-show-images t
-;         mu4e-html2text-command "w3m -T text/html"
-;         mu4e-view-show-addresses t)
-;   ;; Mail directory shortcuts
-;   (setq mu4e-maildir-shortcuts
-;         '(("/INBOX" . ?j)))
-;
-;   ;;; Bookmarks
-;   (setq mu4e-bookmarks
-;         `(("flag:unread AND NOT flag:trashed AND NOT maildir:/RUphysics/Archive" "Unread messages" ?u)
-;           ("date:today..now" "Today's messages" ?t)
-;           ("date:7d..now" "Last 7 days" ?w)
-;           ("flag:flagged" "flagged" ?f)
-;           ("mime:image/*" "Messages with images" ?p)
-;           (,(mapconcat 'identity
-;                        (mapcar
-;                         (lambda (maildir)
-;                           (concat "maildir:" (car maildir)))
-;                         mu4e-maildir-shortcuts) " OR ")
-;            "All inboxes" ?i))))
-
-; mac specific
 ;(setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
 ;(setq exec-path (append exec-path '("/Library/TeX/texbin")))
 
@@ -142,17 +83,6 @@
   ; realzied there were some bad json dumps in some files, cleaning up the really long lines helped a lot
   ; see goto-long-line which has been added to this config
   ;
-  ; I didn't like the auto completeion of the formatting stuff
-  ; below caused issue on osx, commenting it out and still have the desired behavior
-  ; maybe new version of doom got rid of smartparen for these
-  ; (sp-with-modes 'org-mode
-  ;   (sp-local-pair "*" nil :actions :rem)
-  ;   (sp-local-pair "_" nil :actions :rem)
-  ;   (sp-local-pair "/" nil :actions :rem)
-  ;   (sp-local-pair "~" nil :actions :rem)
-  ;   (sp-local-pair "=" nil :actions :rem))
-
-
   ; Didn't like that new headings on C-return weren't put in at point
   (setq org-insert-heading-respect-content nil)
   (map! :map evil-org-mode-map
@@ -170,7 +100,7 @@
   ;; make code look nice even before session started
   (add-to-list 'org-src-lang-modes '("ipython" . python))
   ;; I like when org opens links in new windows/frames
-  ;; (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
+  ;no i dont ;; (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
   (if (featurep! :private frames-only)
       (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
     (setq org-src-window-setup 'other-window)
@@ -216,70 +146,6 @@
          ))
 
 
-  ;; (after! ob-ipython
-  ;;   ;; made ob-ipython work for newer version of doom I reverted from
-  ;;   ;; (after! ob-async
-  ;;   ;;   (add-to-list 'ob-async-no-async-languages-alist "ipython"))
-
-  ;;   (setq ob-ipython-command "/home/john/.pyenv/shims/jupyter")
-  ;;   (setq ob-ipython-resources-dir ".ob-ipython-resrc/")
-  ;;   (defun +org*org-babel-edit-prep:ipython-complete (info)
-  ;;     (let* ((params (nth 2 info))
-  ;;            (session (cdr (assoc :session params))))
-  ;;       (org-babel-ipython-initiate-session session params))
-  ;;     ;; Support for python.el's "send-code" commands within edit buffers.
-  ;;     (setq-local python-shell-buffer-name
-  ;;                 (format "Python:ob-ipython-%s"
-  ;;                         (ob-ipython--normalize-session
-  ;;                          (cdr (assoc :session (nth 2 info))))))
-  ;;     (setq-local default-directory
-  ;;                 (format "%s"
-  ;;                         (ob-ipython--normalize-session
-  ;;                          (cdr (assoc :pydir (nth 2 info))))))
-  ;;     (ob-ipython-mode 1)
-  ;;     ;; A few things to to do completions properly
-  ;;     ;; 1.  use company-ob-ipython then company-anaconda
-  ;;     ;;     anaconda will work before a block is executed
-  ;;     ;;     and is useful for getting documentation
-  ;;     ;; 2. set company-idle-delay to nil and bind a key for completion (C-n)
-  ;;     ;;    this is because company-ob-ipython is slow
-  ;;     ;;    see https://github.com/gregsexton/ob-ipython/issues/151
-  ;;     ;;    Two possible ways:
-  ;;     ;;      a. (current) bind to company-ob-ipython (then don't put it in backends and keep delay finite)
-  ;;     ;;      b. bind to company-indent-or-complete-common
-  ;;     ;;    ISSUE: the complete binding seems to not work with :local
-  ;;     ;; 3. for docs from parts anaconda can't track we bind a key to
-  ;;     ;;    ob-ipython-complete (C-S-k)
-  ;;     ;;    could replace with conditional map (when anaconda fails) so K can be used
-  ;;     (when (featurep! :completion company)
-  ;;       (setq-local company-backends
-  ;;                   '(company-anaconda
-  ;;                     company-dabbrev
-  ;;                     company-files
-  ;;                     company-yasnippet))
-  ;;       (setq-local company-idle-delay 0.1))
-  ;;     (map! :local
-  ;;           :desc "ob-ipython-inspect" :n "C-S-k" #'ob-ipython-inspect
-  ;;           :desc "ob ipython completion" :i "C-n" #'company-ob-ipython)
-  ;;     (when (featurep 'lpy)
-  ;;       (setq lispy-python-proc
-  ;;             (format "Python:ob-ipython-%s"
-  ;;                     (ob-ipython--normalize-session
-  ;;                      (cdr (assoc :session (nth 2 info)))))
-  ;;             lispy--python-middleware-loaded-p nil)
-  ;;       (lispy--python-middleware-load))
-  ;;     )
-  ;;     ;; 4. fix repl completion? company-capf seems to work inconsistently (C-x C-o)
-  ;;     ;;    python-shell-completion-complete-or-indent seems to work (TAB = C-i)
-  ;;     ;;    but is annoying when there are multiple choices
-  ;;   (advice-add '+org*org-babel-edit-prep:ipython :override #'+org*org-babel-edit-prep:ipython-complete)
-
-  ;;   ;; from https://github.com/gregsexton/ob-ipython/issues/135#issuecomment-397463174
-  ;;   ;; (advice-add 'ob-ipython--collect-json :before
-  ;;   ;;             (lambda (&rest args)
-  ;;   ;;               (when (re-search-forward "{" nil t)
-  ;;   ;;                 (backward-char))))
-  ;;   )
 
   ; don't want return to execute src blocks
   ; since function is autoloaded we override it with an advice
@@ -375,10 +241,6 @@
 
   )                                    
 
-; (setenv "PYTHONPATH" "/home/john/scripts/awful_pip_prefix_thing/lib/python3.6/site-packages/:/home/john/scripts/pyMods/:")
-; (setq conda-anaconda-home "/home/john/.pyenv/versions/anaconda3-4.4.0")
-
-
 ;; key binds
 (map! :leader
       (:desc "App" :prefix "a"
@@ -429,13 +291,6 @@ Plain `C-u' (no number) uses `fill-column' as LEN."
       (goto-line start-line)
       (message "Not found"))))
 
-;; Now it reads whatever the version in that dir is, which is a better practice anyway
-;; So I will not se pyenv versions here
-;; (doom-modeline-mode) ; hack to make pyenv-mode-set not have issues?
-;; (pyenv-mode-set "anaconda3-4.4.0")
-;;
-;;
-;;
 
 (if (featurep! :private frames-only)
     (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
@@ -455,64 +310,6 @@ Plain `C-u' (no number) uses `fill-column' as LEN."
   (mapc #'call-interactively '(save-buffer org-edit-src-exit)))
 (advice-add 'evil-org-edit-src-exit :override
             'replace-evil-org-edit-src-exit)
-
-
-;; risky patch hack???
-;;; (defun list-processes--refresh ()
-;;;   "Recompute the list of processes for the Process List buffer.
-;;; Also, delete any process that is exited or signaled."
-;;;   (setq tabulated-list-entries nil)
-;;;   (dolist (p (process-list))
-;;;     (cond ((memq (process-status p) '(exit signal closed))
-;;;            (delete-process p))
-;;;           ((or (not process-menu-query-only)
-;;;                (process-query-on-exit-flag p))
-;;;            (let* ((buf (process-buffer p))
-;;;                   (type (process-type p))
-;;;                   (pid  (if (process-id p) (format "%d" (process-id p)) "--"))
-;;;                   (name (process-name p))
-;;;                   (status (symbol-name (process-status p)))
-;;;                   (buf-label (if (buffer-live-p buf)
-;;;                                  `(,(buffer-name buf)
-;;;                                    face link
-;;;                                    help-echo ,(format-message
-;;;                                                "Visit buffer `%s'"
-;;;                                                (buffer-name buf))
-;;;                                    follow-link t
-;;;                                    process-buffer ,buf
-;;;                                    action process-menu-visit-buffer)
-;;;                                "--"))
-;;;                   (tty (or (process-tty-name p) "--"))
-;;;                   (cmd
-;;;                    (if (memq type '(network serial))
-;;;                        (let ((contact (process-contact p t)))
-;;;                          (if (eq type 'network)
-;;;                              (format "(%s %s)"
-;;;                                      (if (plist-get contact :type)
-;;;                                          "datagram"
-;;;                                        "network")
-;;;                                      (if (plist-get contact :server)
-;;;                                          (format "server on %s"
-;;;                                                  (or
-;;;                                                   (plist-get contact :host)
-;;;                                                   (plist-get contact :local)))
-;;;                                        (format "connection to %s"
-;;;                                                (plist-get contact :host))))
-;;;                            (format "(serial port %s%s)"
-;;;                                    (or (plist-get contact :port) "?")
-;;;                                    (let ((speed (plist-get contact :speed)))
-;;;                                      (if speed
-;;;                                          (format " at %s b/s" speed)
-;;;                                        "")))))
-;;;                      ;; ACTUAL CHANGE HERE
-;;;                      ;; (mapconcat 'identity (process-command p) " "))))
-;;;                      (if (not (stringp (process-command p))) ""
-;;;                        (mapconcat 'identity (process-command p) " ")))))
-;;;              (push (list p (vector name pid status buf-label tty cmd))
-;;;                    tabulated-list-entries)))))
-;;;   (tabulated-list-init-header))
-
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
