@@ -35,7 +35,8 @@
 
 ;; popup rules break esc key in emacs mode within popup terminals
 ;; kind of a shame because otherwise the popup rules would be nice
-; commented this out for now sine I learned that C-c C-z toggles ESC being sent to vterm (in evil ins mode)
+; commented this out for now sine I learned that C-c C-z toggles ESC
+; being sent to vterm (in evil ins mode) set to always run below
 ; (after! vterm
 ;   (set-popup-rules!
 ;     '(("^\\*doom:\\(?:v?term\\|e?shell\\)-popup"  ; editing buffers (interaction required)
@@ -43,6 +44,9 @@
 ;        :ignore t)
 ;       ("^vterm" :ignore t)
 ;       )))
+
+; make it so that by default ESC is sent to vterm
+(add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)
 
 ; never did the google developers steps
 ; (defun my-open-calendar ()
