@@ -68,9 +68,29 @@
     (map! :mode pdf-view-mode
           :desc "insert a note"
           :n "i" ))
+  (add-hook! '+org-babel-load-functions
+    (defun +org-babel-load-jupyter-h (lang)
+      (when (string-prefix-p "jupyter-" (symbol-name lang))
+        (require 'jupyter)
+        (let* ((lang-name (symbol-name lang))
+               (lang-tail (string-remove-prefix "jupyter-" lang-name)))
+          (and (not (assoc lang-tail org-src-lang-modes))
+               (require (intern (format "ob-%s" lang-tail))
+                        nil t)
+               (add-to-list 'org-src-lang-modes (cons lang-name (intern lang-tail)))))
+        (with-demoted-errors "Jupyter: %s"
+          (require lang nil t)
+          (require 'ob-jupyter nil t))
+                                        ; start the minor mode jupyter-org-interaction-mode
+        (jupyter-org-interaction-mode)
+                                        ; put company-capf in front for completions (gets overwritten?)
+        (set-company-backend! 'jupyter-org-interaction-mode 'company-capf)
+        (+company-init-backends-h)
+                                        ; get K to call jupyter-org-inspect-at-point
+        (set-lookup-handlers! 'jupyter-org-interaction-mode
+          :documentation #'jupyter-inspect-at-point :async t)
+        (+lookup--init-jupyter-org-interaction-mode-handlers-h))))
 
-  (set-company-backend! 'org-mode
-    'company-capf) ; put this in front so completions work for jupyter
   ;; macro to convert old ob-ipython blocks to emacs-jupyter blocks
   (fset 'obipy-to-jup
         (lambda (&optional arg) "Keyboard macro." (interactive "p")
