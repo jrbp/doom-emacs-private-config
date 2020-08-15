@@ -22,8 +22,8 @@
        :completion
        (company          ; the ultimate code completion backend
          +auto           ; as-you-type code completion
-         +childframe)
-        ;)
+         ;+childframe)
+        )
        (helm             ; the *other* search engine for love and life
         +fuzzy)          ; enable fuzzy search backend for helm
        ;;ido               ; the other *other* search engine...
@@ -85,7 +85,7 @@
 
        :checkers
        spell
-       (syntax +childframe)
+       syntax ;+childframe)
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
