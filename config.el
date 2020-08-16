@@ -26,24 +26,56 @@
          (insert (expand-file-name filename)))))
 
 (defun open-term ()
-  ;; currently useless as it always opens in home
   (interactive)
-  ;(call-process-shell-command "open -aiterm&" nil 0)) ;; mac
-;   (call-process-shell-command "termite&" nil 0)) ;; thinkpad
-   (call-process-shell-command "gnome-terminal" nil 0)) ;; flatiron desktop (needs testing)
-;(setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
-;(setq exec-path (append exec-path '("/Library/TeX/texbin")))
+  (call-process-shell-command "termite&" nil 0)) ;; thinkpad
 
-;; popup rules break esc key in emacs mode within popup terminals
-;; kind of a shame because otherwise the popup rules would be nice
-; JUST USE C-c C-z
-;(after! vterm
-;  (set-popup-rules!
-;    '(("^\\*doom:\\(?:v?term\\|e?shell\\)-popup"  ; editing buffers (interaction required)
-;                                        ; :vslot -5 :size 0.35 :select t :modeline nil :quit nil :ttl nil)
-;       :ignore t)
-;      ("^vterm" :ignore t)
-;      )))
+(defun open-ranger ()
+  (interactive)
+  (call-process-shell-command "termite -e ranger&" nil 0))
+
+(after! mu4e
+  (add-to-list 'mu4e-view-actions
+               '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+ ; doom doesn't load org-mu4e until composing
+ ; this stops us from using its org-capture function
+  (require 'org-mu4e nil 'noerror)
+  ;; setting up email in mu4e
+  (setq message-send-mail-function 'message-send-mail-with-sendmail)
+  (setq sendmail-program "msmtp")
+  (set-email-account! "RUphysics"
+      '((mu4e-sent-folder       . "/RUphysics/Sent")
+        (mu4e-drafts-folder     . "/RUphysics/Drafts")
+        (mu4e-trash-folder      . "/RUphysics/Trash")
+        (mu4e-refile-folder     . "/RUphysics/Archive")
+        (smtpmail-smtp-user     . "jrb285@physics.rutgers.edu")
+        (user-mail-address      . "jrb285@physics.rutgers.edu")
+        (user-full-name         . "John Bonini"))
+      t)
+  ;;; Set up some common mu4e variables
+  (setq mu4e-update-interval 300
+        mu4e-compose-signature-auto-include nil
+        mu4e-view-show-images t
+        mu4e-html2text-command "w3m -T text/html"
+        mu4e-view-show-addresses t)
+  ;; Mail directory shortcuts
+  (setq mu4e-maildir-shortcuts
+        '(("/INBOX" . ?j)))
+
+  ;;; Bookmarks
+  (setq mu4e-bookmarks
+        `(("flag:unread AND NOT flag:trashed AND NOT maildir:/RUphysics/Archive" "Unread messages" ?u)
+          ("date:today..now" "Today's messages" ?t)
+          ("date:7d..now" "Last 7 days" ?w)
+          ("flag:flagged" "flagged" ?f)
+          ("mime:image/*" "Messages with images" ?p)
+          (,(mapconcat 'identity
+                       (mapcar
+                        (lambda (maildir)
+                          (concat "maildir:" (car maildir)))
+                        mu4e-maildir-shortcuts) " OR ")
+           "All inboxes" ?i))))
+
+(add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)
 
 ; never did the google developers steps
 ; (defun my-open-calendar ()
@@ -121,9 +153,8 @@
 
   (add-to-list 'org-file-apps '("\\.vesta\\'" . "VESTA %s"))
   (add-to-list 'org-file-apps '("\\.nb\\'" . "mathematica %s"))
-  ; (add-to-list 'org-file-apps '("\\.pdf\\'" . "open %s"))
   (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
-  ;(add-to-list 'org-file-apps '("\\.pptx\\'" . "open %s"))
+  ; (add-to-list 'org-file-apps '("\\.pdf\\'" . "zathura %s"))
   (add-to-list 'org-file-apps '("\\.odp\\'" . "libreoffice %s"))
   (setq org-export-with-sub-superscripts (quote {}))
   (setq org-image-actual-width 700)
@@ -271,13 +302,15 @@
 
   )                                    
 
+(setenv "PYTHONPATH" "/home/john/scripts/awful_pip_prefix_thing/lib/python3.6/site-packages/:/home/john/scripts/pyMods/:")
+
 ;; key binds
 (map! :leader
       (:desc "App" :prefix "a"
         :desc "Ielm" :n "i" #'ielm
         :desc "elfeed" :n "e" #'elfeed
         ;; :desc "Mail" :n "m" #'=email
-        ;;:desc "Mail" :n "m" #'mu4e
+        :desc "Mail" :n "m" #'mu4e
         :desc "Processes" :n "p" #'list-processes
         :desc "Jupyter-repl" :n "j" #'jupyter-run-repl
         :desc "External term" :n "t" #'open-term
@@ -321,6 +354,59 @@ Plain `C-u' (no number) uses `fill-column' as LEN."
       (goto-line start-line)
       (message "Not found"))))
 
+(defun list-processes--refresh ()
+  "Recompute the list of processes for the Process List buffer.
+Also, delete any process that is exited or signaled."
+  (setq tabulated-list-entries nil)
+  (dolist (p (process-list))
+    (cond ((memq (process-status p) '(exit signal closed))
+           (delete-process p))
+          ((or (not process-menu-query-only)
+               (process-query-on-exit-flag p))
+           (let* ((buf (process-buffer p))
+                  (type (process-type p))
+                  (pid  (if (process-id p) (format "%d" (process-id p)) "--"))
+                  (name (process-name p))
+                  (status (symbol-name (process-status p)))
+                  (buf-label (if (buffer-live-p buf)
+                                 `(,(buffer-name buf)
+                                   face link
+                                   help-echo ,(format-message
+                                               "Visit buffer `%s'"
+                                               (buffer-name buf))
+                                   follow-link t
+                                   process-buffer ,buf
+                                   action process-menu-visit-buffer)
+                               "--"))
+                  (tty (or (process-tty-name p) "--"))
+                  (cmd
+                   (if (memq type '(network serial))
+                       (let ((contact (process-contact p t)))
+                         (if (eq type 'network)
+                             (format "(%s %s)"
+                                     (if (plist-get contact :type)
+                                         "datagram"
+                                       "network")
+                                     (if (plist-get contact :server)
+                                         (format "server on %s"
+                                                 (or
+                                                  (plist-get contact :host)
+                                                  (plist-get contact :local)))
+                                       (format "connection to %s"
+                                               (plist-get contact :host))))
+                           (format "(serial port %s%s)"
+                                   (or (plist-get contact :port) "?")
+                                   (let ((speed (plist-get contact :speed)))
+                                     (if speed
+                                         (format " at %s b/s" speed)
+                                       "")))))
+                     ;; ACTUAL CHANGE HERE
+                     ;; (mapconcat 'identity (process-command p) " "))))
+                     (if (not (stringp (process-command p))) ""
+                       (mapconcat 'identity (process-command p) " ")))))
+             (push (list p (vector name pid status buf-label tty cmd))
+                   tabulated-list-entries)))))
+  (tabulated-list-init-header))
 
 (if (featurep! :private frames-only)
     (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
