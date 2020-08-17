@@ -159,6 +159,8 @@
  ; default agenda view is just today
  (setq org-agenda-span 'day)
  (setq org-agenda-start-day nil)
+ (setq org-agenda-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM")
+
 
  (defun esf/execute-startup-block ()
    (interactive)
