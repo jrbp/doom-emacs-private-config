@@ -25,5 +25,7 @@ Prepended with `org-super-agenda-header-separator'."
                   :priority "A")
            (:name "At some point"
                   :priority "C" :order 99)
+           (:name "HPC Jobs"
+                  :tag "HPCJOB" :order 98)
            (:auto-category t)
            )))
