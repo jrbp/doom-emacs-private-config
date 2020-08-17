@@ -146,6 +146,8 @@
  ; default agenda view is just today
  (setq org-agenda-span 'day)
  (setq org-agenda-start-day nil)
+ (setq org-agenda-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM %JOBID %JOBCLUST %JOBDIR")
+ (setq org-agenda-custom-commands '(("j" "HPC jobs" tags-todo "HPCJOB") ("n" "Agenda and all TODOs" ((agenda "") (alltodo "")))))
 
  (defun esf/execute-startup-block ()
    (interactive)
