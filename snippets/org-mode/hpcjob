@@ -3,7 +3,6 @@
 # uuid:
 # key: hpc
 # condition: t 
-# expand-env: ((yas-indent-line 'fixed))
 # --
 
  TODO $0  :HPCJOB:

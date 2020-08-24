@@ -177,7 +177,7 @@
                                   ("investigating" . ?i)
                                   ("organizing" . ?o)
                                   ("writing/preparing" . ?p)
-                                  ("calculations" . ?s)))
+                                  ("HPCJOB" . ?s)))
  (setq org-todo-keywords
        '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
  (setq org-capture-templates
