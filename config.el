@@ -33,18 +33,6 @@
 (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
 (setq exec-path (append exec-path '("/Library/TeX/texbin")))
 
-;; popup rules break esc key in emacs mode within popup terminals
-;; kind of a shame because otherwise the popup rules would be nice
-; commented this out for now sine I learned that C-c C-z toggles ESC
-; being sent to vterm (in evil ins mode) set to always run below
-; (after! vterm
-;   (set-popup-rules!
-;     '(("^\\*doom:\\(?:v?term\\|e?shell\\)-popup"  ; editing buffers (interaction required)
-;                                         ; :vslot -5 :size 0.35 :select t :modeline nil :quit nil :ttl nil)
-;        :ignore t)
-;       ("^vterm" :ignore t)
-;       )))
-
 ; make it so that by default ESC is sent to vterm
 (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)
 
@@ -308,7 +296,7 @@
 (map! :mode process-menu-mode
       :desc "Quit" :n "q" (lambda () (interactive)
                             (kill-this-buffer) (evil-quit)))
-(map! :desc "store(grab) link" "C-c C-g" #'org-store-link)
+(map! :desc "store(grab) link" "C-c C-g" #'org-store-link); SPC n l works maybe get rid of this?
 
 (defun copy-window ()
   (interactive)
@@ -350,7 +338,8 @@ Plain `C-u' (no number) uses `fill-column' as LEN."
 ;; fixing where this was broken used to use evil-write instead of save-buffer
 ;; it used to be that I could just redefine here, but that seems to not work
 ;; renaming my functiona and putting in as advice instead
-; (defun evil-org-edit-src-exit ()
+;; this is only an issue in frames only mode, without it C-c C-c works
+;; (but this allows for ZZ so I keep it)
 (defun replace-evil-org-edit-src-exit ()
   "Save then `evil-edit-src-exit'."
   (interactive)
