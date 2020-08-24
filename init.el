@@ -44,7 +44,7 @@
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints ; replaced evil-goggles
        (popup            ; tame sudden yet inevitable temporary windows
-        +all             ; catch all popups that start with an asterix
+        ;+all             ; catch all popups that start with an asterix
         +defaults)       ; default popup rules
        ;;pretty-code       ; replace bits of code with pretty symbols
        ;;tabs              ; an tab bar for Emacs
