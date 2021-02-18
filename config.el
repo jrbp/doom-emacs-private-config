@@ -93,7 +93,33 @@
                                         ; get K to call jupyter-org-inspect-at-point
         (set-lookup-handlers! 'jupyter-org-interaction-mode
           :documentation #'jupyter-inspect-at-point :async t)
-        (+lookup--init-jupyter-org-interaction-mode-handlers-h))))
+        (+lookup--init-jupyter-org-interaction-mode-handlers-h)))
+
+  (defun +org-agenda-open-in-new-workspace ()
+    (interactive)
+    (let* ((marker (or (org-get-at-bol 'org-marker)
+                       (org-agenda-error)))
+           (buffer (marker-buffer marker))
+           (pos (marker-position marker)))
+      ;; FIXME: use `org-switch-to-buffer-other-window'?
+      (+workspace/new)
+      (switch-to-buffer buffer)
+      (widen)
+      (push-mark)
+      (goto-char pos)))
+                                        ;(when (derived-mode-p 'org-mode)
+                                        ;  (org-show-context 'agenda)
+                                        ;  (recenter (/ (window-height) 2))
+                                        ;  (org-back-to-heading t)
+                                        ;  (let ((case-fold-search nil))
+                                        ;    (when (re-search-forward org-complex-heading-regexp nil t)
+                                        ;      (goto-char (match-beginning 4)))))
+                                        ;(run-hooks 'org-agenda-after-show-hook)
+                                        ;(and highlight (org-highlight (point-at-bol) (point-at-eol)))
+
+  (map! :mode  org-agenda-mode
+        :desc  "goto in new workspace" :g     [?\S-\t] #'+org-agenda-open-in-new-workspace
+        :desc  "goto in new workspace" :g     [backtab] #'+org-agenda-open-in-new-workspace))
 
   ;; macro to convert old ob-ipython blocks to emacs-jupyter blocks
   (fset 'obipy-to-jup
