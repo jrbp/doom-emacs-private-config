@@ -102,7 +102,8 @@
                                         ; get K to call jupyter-org-inspect-at-point
         (set-lookup-handlers! 'jupyter-org-interaction-mode
           :documentation #'jupyter-inspect-at-point :async t)
-        (+lookup--init-jupyter-org-interaction-mode-handlers-h)))
+        (+lookup--init-jupyter-org-interaction-mode-handlers-h)
+        )))
 
   (defun +org-agenda-open-in-new-workspace ()
     (interactive)
@@ -128,7 +129,7 @@
 
   (map! :mode  org-agenda-mode
         :desc  "goto in new workspace" :g     [?\S-\t] #'+org-agenda-open-in-new-workspace
-        :desc  "goto in new workspace" :g     [backtab] #'+org-agenda-open-in-new-workspace))
+        :desc  "goto in new workspace" :g     [backtab] #'+org-agenda-open-in-new-workspace)
 
   ;; macro to convert old ob-ipython blocks to emacs-jupyter blocks
   (fset 'obipy-to-jup
