@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: org-table-code
+# uuid:
+# key: tbl
+# condition: t
+# --
+
+#+tblname: ${1:data}
+| $0  |   |
+|---+---|
+|   |   |
+|   |   |
+
+#+BEGIN_SRC jupyter-python :session py :async yes  :var dat=$1
+
+#+END_SRC
