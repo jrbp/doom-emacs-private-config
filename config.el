@@ -44,6 +44,8 @@
 ;       :ignore t)
 ;      ("^vterm" :ignore t)
 ;      )))
+(set-popup-rules!
+  '(("^\\*jupyter.*" :ignore t)))
 
 ; make it so that by default ESC is sent to vterm
 (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)
