@@ -34,7 +34,7 @@
        :ui
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
-       ;;doom-dashboard    ; a nifty splash screen for Emacs
+       doom-dashboard    ; a nifty splash screen for Emacs
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        ;;fill-column       ; a `fill-column' indicator
        hl-todo           ; highlight TODO/FIXME/NOTE tags
@@ -171,6 +171,7 @@
        ;;purescript        ; javascript, but functional
        (python            ; beautiful is better than ugly
         ; +conda ; sadly these two seem to conflict
+         +poetry
          +pyenv
         )
        ;;qt                ; the 'cutest' gui framework ever
