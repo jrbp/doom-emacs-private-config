@@ -3,12 +3,13 @@
 # uuid:
 # key: hpc
 # condition: t
-# expand-env: ((yas-indent-line 'fixed))
+# expand-env: ((yas-indent-line 'auto))
 # --
 
- TODO $0  :HPCJOB:
+ $0  :HPCJOB:
 :PROPERTIES:
 :JOBCLUST: ${1:rusty}
-:JOBDIR:   $2
+:JOBDIR: ${2:`(current-kill 0)`}
+:header-args: :var jobdir="$2"
 :JOBID:    $3
 :END:
