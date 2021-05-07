@@ -1,7 +1,9 @@
 ;;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
+;(setq enable-local-variables t)
+;(setq enable-local-eval t)
 (setq doom-font (font-spec :family "Monospace" :size 18))
 
-(setq initial-buffer-choice "~/org/master.org")
+;(setq initial-buffer-choice "~/org/master.org")
 
 ;; TODO: it would be a good idea to start all my custom functions with jrb/ or something
 (defun insert-file-name (filename &optional args)
@@ -362,6 +364,13 @@ If on a:
 
 (map!
  :desc "open copy of current window" :m "go" 'copy-window)
+
+(after! jupyter
+  (defun jupyter-refresh-kernel-env ()
+    "workaround to update cache of available
+jupyter kernels after pyenv env is changed"
+    (interactive)
+    (jupyter-available-kernelspecs t)))
 
 (defun goto-long-line (len)
   "Go to the first line that is at least LEN characters long.
